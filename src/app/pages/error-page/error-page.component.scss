@@ -1,0 +1,51 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  min-height: 70dvh;
+}
+
+h1 {
+  font-size: 16rem;
+}
+
+h3 {
+  font-size: 3.2rem;
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+p {
+  font-size: 1.8rem;
+  font-weight: 400;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+button {
+  border: none;
+  padding: 1.6rem 4.5rem;
+  margin-top: 3.4rem;
+  border-radius: 0.6rem;
+  background: #580ea2;
+  color: #fff;
+  transition: all 0.3s;
+  &:hover {
+    transform: scale(1.02);
+    background: #7737b8;
+  }
+  &:disabled {
+    background: #d3d3d3;
+    color: #a1a1a1;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+.error-box {
+  display: flex;
+  align-items: center;
+  padding-bottom: 1.6rem;
+}

@@ -1,0 +1,68 @@
+<div class="player">
+  <div class="progress">
+    <input
+      class="progress-line"
+      type="range"
+      [min]="0"
+      [max]="duration"
+      [value]="currentTime"
+      (input)="onSeek($event)"
+    />
+  </div>
+  <div class="player-content">
+    <div class="player-control-box">
+      <app-back class="svg-icon-player" (click)="onPrevious()"></app-back>
+      @if (play) {
+      <app-pause class="svg-icon-player" (click)="onPlayPause()"></app-pause>
+      } @else {
+      <app-play class="svg-icon-player" (click)="onPlayPause()"></app-play>
+      }
+      <app-skip class="svg-icon-player" (click)="onNext()"></app-skip>
+      @if (repeatMode === 'track') {
+      <app-repeat-track
+        class="svg-icon-small"
+        [ngClass]="repeatMode === 'track' ? 'active' : 'svg-icon-small'"
+        (click)="setRepeatMode('all')"
+      ></app-repeat-track>
+      } @else if (repeatMode === 'all') {
+      <app-repeat
+        class="svg-icon-small"
+        [ngClass]="repeatMode === 'all' ? 'active' : 'svg-icon-small'"
+        (click)="setRepeatMode('none')"
+      ></app-repeat>
+      } @else {
+      <app-repeat
+        class="svg-icon-small"
+        (click)="setRepeatMode('track')"
+      ></app-repeat>
+      }
+      <app-mix
+        class="svg-icon-small"
+        [ngClass]="isShuffle ? 'active' : 'svg-icon-small'"
+        (click)="toggleShuffle()"
+      ></app-mix>
+      <div class="track">
+        <app-track-icon class="svg-icon-track"></app-track-icon>
+        <div class="track-description">
+          <p class="track-title">{{ currentTrack?.name || "—" }}</p>
+          <p class="track-artist">{{ currentTrack?.author || "—" }}</p>
+        </div>
+      </div>
+      <app-heart-icon class="svg-icon-heart" (click)="onLike(currentTrack!.id)"></app-heart-icon>
+      <app-dislike class="svg-icon-heart" (click)="onDisLike(currentTrack!.id)"></app-dislike>
+    </div>
+    <div class="volume-box">
+      <app-volume class="svg-icon-volume"></app-volume>
+      <div class="progress">
+        <input
+          class="progress-line"
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          (input)="onVolumeChange($event)"
+        />
+      </div>
+    </div>
+  </div>
+</div>

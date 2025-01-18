@@ -1,0 +1,29 @@
+.auth-container {
+  background: #181818;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+}
+
+.auth-form {
+  background: white;
+  width: 36rem;
+  border-radius: 1.2rem;
+  padding: 4rem;
+  margin-bottom: 1rem;
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+  color: black;
+}
+
+p {
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: 900;
+}

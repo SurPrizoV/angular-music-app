@@ -1,0 +1,81 @@
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { ClockIconComponent } from '../../../shared/Icons/clock-icon/clock-icon.component';
+import { TrackIconComponent } from '../../../shared/Icons/track-icon/track-icon.component';
+import { HeartIconComponent } from '../../../shared/Icons/heart-icon/heart-icon.component';
+import { DislikeComponent } from '../../../shared/Icons/dislike/dislike.component';
+import { SkeletonComponent } from '../../../shared/components/skeleton/skeleton.component';
+import { TracksAPIService } from '../../../shared/services/tracksAPI.service';
+import { SearchFilterService } from '../../../shared/services/searchFilter.service';
+import { PlayerService } from '../../../shared/services/player.service';
+import { TimeFormatPipe } from '../../../shared/pipes/time-format.pipe';
+
+import { Track } from '../../../shared/interfaces';
+
+@Component({
+  selector: 'app-playlist-indi-page',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ClockIconComponent,
+    TrackIconComponent,
+    HeartIconComponent,
+    DislikeComponent,
+    SkeletonComponent,
+    TimeFormatPipe,
+  ],
+  templateUrl: './playlist-indi-page.component.html',
+})
+export class PlaylistIndiPageComponent implements OnInit {
+  filteredTracks: Track[] = [];
+  isLoading: boolean = false;
+
+  constructor(
+    private tracksAPIService: TracksAPIService,
+    public searchFilterService: SearchFilterService,
+    private playerService: PlayerService
+  ) {}
+
+  ngOnInit() {
+    this.isLoading = true;
+    this.tracksAPIService.getTrackCollectionById(3).subscribe({
+      next: (tracks: Track[]) => {
+        tracks = tracks.map((track) => ({
+          ...track,
+          isLiked: track.stared_user.some(
+            (user) => user.email === localStorage.getItem('mail')
+          ),
+        }));
+
+        this.searchFilterService.setTracks(tracks);
+
+        this.searchFilterService.filterTracks().subscribe((filteredTracks) => {
+          this.filteredTracks = filteredTracks;
+        });
+      },
+      complete: () => {
+        this.isLoading = false;
+      },
+    });
+  }
+
+  playTrack(track: Track) {
+    const trackIndex = this.filteredTracks.findIndex((t) => t.id === track.id);
+    if (trackIndex !== -1) {
+      this.playerService.setTracks(this.filteredTracks);
+      this.playerService.setCurrentIndex(trackIndex);
+      this.playerService.play();
+    }
+  }
+
+  onLike(event: MouseEvent, id: number) {
+    event.stopPropagation();
+    this.tracksAPIService.addTrackInFavorite(id).subscribe();
+  }
+
+  onDisLike(event: MouseEvent, id: number) {
+    event.stopPropagation();
+    this.tracksAPIService.removeTrackFromFavorite(id).subscribe();
+  }
+}

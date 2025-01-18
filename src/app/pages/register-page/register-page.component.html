@@ -1,0 +1,72 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <div class="form-control">
+    <input type="email" placeholder="Email" formControlName="email" />
+    @if (form.get('email')?.touched && form.get('email')?.invalid) {
+    <div class="validation">
+      @if (form.get('email')?.errors?.['required']) {
+      <small>Поле email не может быть пустым!</small>
+      } @if (form.get('email')?.errors?.['email']) {
+      <small>Введите корректный email.</small>
+      }
+    </div>
+    }
+  </div>
+  <div class="form-control">
+    @if (showPass) {
+    <app-eye class="eye" (click)="toggleShowPass()"></app-eye>
+    } @else {
+    <app-close-eye class="eye" (click)="toggleShowPass()"></app-close-eye>
+    }
+    <input
+      [type]="showPass ? 'text' : 'password'"
+      placeholder="Пароль"
+      formControlName="password"
+    />
+    @if (form.get('password')?.touched && form.get('password')?.invalid) {
+    <div class="validation">
+      @if (form.get('password')?.errors?.['required']) {
+      <small>Поле пароль не может быть пустым!</small>
+      } @if (form.get('password')?.errors?.['minlength']) {
+      <small
+        >Количество символов поле логин должно быть:
+        {{form.get('password')?.errors?.['minlength'].requiredLength}}
+        . Сейчас колличество символов:
+        {{form.get('password')?.errors?.['minlength'].actualLength}} .</small
+      >
+      }
+    </div>
+    }
+  </div>
+  <div class="form-control">
+    @if (showRepeatPass) {
+    <app-eye class="eye" (click)="toggleShowRepeatPass()"></app-eye>
+    } @else {
+    <app-close-eye class="eye" (click)="toggleShowRepeatPass()"></app-close-eye>
+    }
+    <input
+      [type]="showRepeatPass ? 'text' : 'password'"
+      placeholder="Повторите пароль"
+      formControlName="repeatPassword"
+    />
+    @if (form.get('repeatPassword')?.touched &&
+    form.get('repeatPassword')?.invalid) {
+    <div class="validation">
+      @if (form.get('repeatPassword')?.errors?.['required']) {
+      <small>Поле повторите пароль не может быть пустым!</small>
+      } @if (form.get('repeatPassword')?.errors?.['notequal']) {
+      <small>Пароли должны совпадать!</small>
+      }
+    </div>
+    }
+  </div>
+  @if (error) {
+  <small class="error">{{ error }}</small>
+  }
+  <button
+    class="button-register"
+    type="submit"
+    [disabled]="form.invalid || disabled"
+  >
+    Зарегистрироваться
+  </button>
+</form>

@@ -1,0 +1,57 @@
+<div class="main-container">
+  <header>
+    <a routerLink="/">
+      <app-logo class="logo"></app-logo>
+    </a>
+    <div class="search-box">
+      <app-search-icon class="svg-icon-big"></app-search-icon>
+      <input
+        type="text"
+        placeholder="Поиск"
+        [(ngModel)]="searchTrack"
+        (ngModelChange)="onSearchChange($event)"
+      />
+    </div>
+    <app-logout-icon
+      class="svg-icon svg-icon-big"
+      (click)="logout()"
+    ></app-logout-icon>
+  </header>
+  <div class="content-box">
+    <div class="left-side-menu">
+      <app-burger-icon
+        class="svg-icon svg-icon-big"
+        (click)="toggleOpen()"
+      ></app-burger-icon>
+      @if (isOpen) {
+      <div class="left-side-menu-box">
+        <ul>
+          <li
+            [routerLinkActive]="['active']"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <a routerLink="/">Главное</a>
+          </li>
+          <li [routerLinkActive]="['active']">
+            <a routerLink="/favorites">Мои треки</a>
+          </li>
+          <li (click)="logout()">Выйти</li>
+          <li>
+            @if (theme === 'dark') {
+            <app-moon (click)="toggleTheme()"></app-moon>
+            } @else {
+            <app-sun (click)="toggleTheme()"></app-sun>
+            }
+          </li>
+        </ul>
+      </div>
+      }
+    </div>
+    <div class="main-content-box">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  @if (currentTrack) {
+  <app-player></app-player>
+  }
+</div>

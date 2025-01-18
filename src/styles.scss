@@ -1,1 +1,210 @@
-/* You can add global styles to this file, and also import other style files */
+@import "./shared/variables.scss";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  background: var(--background-primary);
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 1.6rem;
+  height: 100dvh;
+}
+
+h1 {
+  color: var(--text-primary);
+  font-size: 6rem;
+  padding-top: 5rem;
+}
+
+a,
+ul {
+  text-decoration: none;
+  color: transparent;
+  cursor: pointer;
+  list-style-type: none;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding-top: 2rem;
+}
+
+.form-control {
+  width: 100%;
+  position: relative;
+  small {
+    color: red;
+  }
+}
+
+.eye {
+  position: absolute;
+  right: 0;
+  top: 0.5rem;
+  cursor: pointer;
+}
+
+.track-box {
+  padding-top: 6rem;
+  height: 40rem;
+
+  &-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2.4rem;
+    color: var(--text-primary);
+
+    & > div {
+      flex: 1;
+      text-align: left;
+    }
+
+    & > div:last-child {
+      text-align: right;
+      gap: 1.7rem;
+    }
+
+    &-head {
+      color: var(--text-secondary);
+      font-weight: bold;
+      padding-bottom: 1rem;
+    }
+  }
+
+  &-container {
+    height: 50dvh;
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+      width: 0;
+      background: transparent;
+    }
+  }
+}
+
+.track-box-content > div:first-child {
+  flex: 2;
+}
+
+.track-box-content > div:nth-child(2),
+.track-box-content > div:nth-child(3) {
+  flex: 1;
+}
+
+.track {
+  color: var(--text-primary);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  &-time {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1.7rem;
+    color: var(--text-secondary);
+  }
+  &-title {
+    display: flex;
+    align-items: center;
+    gap: 1.7rem;
+  }
+}
+
+.span {
+  color: var(--text-secondary);
+  & path,
+  & circle {
+    stroke: var(--text-secondary);
+  }
+}
+
+.svg-icon,
+.burger-container {
+  transition: transform 0.3s;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.05);
+  }
+  &-heart {
+    transition: stroke 0.3s;
+    & path {
+      stroke: var(--svg-secondary);
+    }
+    &:hover path {
+      stroke: var(--hover-secondary);
+    }
+    &:active path {
+      stroke: var(--hover-secondary);
+      fill: var(--active-tertiary);
+    }
+  }
+  &-small {
+    cursor: pointer;
+    path {
+      transition: all 0.3s;
+    }
+    &:hover path {
+      fill: var(--hover-secondary);
+      transform: scale(1.05);
+    }
+    &:active path {
+      fill: var(--active-secondary);
+    }
+    & path {
+      fill: var(--svg-secondary);
+    }
+  }
+  &-big path,
+  &-big circle {
+    stroke: var(--text-primary);
+  }
+  &-track rect {
+    fill: var(--background-tertiary);
+  }
+  &-track path,
+  &-track ellipse {
+    stroke: var(--text-secondary);
+  }
+  &-volume path,
+  &-volume path[stroke] {
+    fill: var(--volume-primary);
+  }
+  &-player {
+    cursor: pointer;
+    transition: fill 0.3s ease;
+    & path {
+      fill: var(--svg-primary);
+      stroke: var(--svg-primary);
+    }
+    &:hover path {
+      fill: var(--hover-tertiary);
+      stroke: var(--hover-tertiary);
+    }
+    &:active path {
+      fill: var(--svg-primary);
+      stroke: var(--svg-primary);
+    }
+  }
+}
+
+.active path {
+  cursor: pointer;
+  fill: var(--active-stroke);
+}
+
+.error {
+  color: red;
+  text-align: center;
+}

@@ -1,0 +1,75 @@
+header {
+  display: flex;
+  gap: 7rem;
+}
+
+.main-container {
+  padding: 3.6rem 9.2rem 0.8rem 3.6rem;
+}
+
+.logo {
+  color: var(--text-primary);
+}
+
+.left-side-menu {
+  width: 24.5rem;
+  &-box {
+    height: 100%;
+    ul {
+      padding-top: 3.6rem;
+    }
+    li {
+      color: var(--text-primary);
+      margin-bottom: 2.6rem;
+      transition: all 0.3s;
+      &:hover {
+        transform: scale(1.05);
+        color: var(--hover-secondary);
+      }
+    }
+    a {
+      color: var(--text-primary);
+      &:hover {
+        transform: scale(1.02);
+        color: var(--hover-secondary);
+      }
+    }
+  }
+}
+
+.active {
+  li {
+    color: var(--hover-secondary);
+  }
+  a {
+    color: var(--hover-secondary);
+  }
+}
+
+.content-box {
+  display: flex;
+  width: 100%;
+  padding-top: 2.8rem;
+}
+
+.main-content-box {
+  width: 100%;
+}
+
+.search-box {
+  border-bottom: 1px solid var(--text-secondary);
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  width: 100%;
+  & input {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    padding: 0.4rem 1.6rem;
+    color: var(--text-primary);
+    &::placeholder {
+      color: var(--text-primary);
+    }
+  }
+}

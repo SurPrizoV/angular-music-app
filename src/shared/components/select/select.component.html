@@ -1,0 +1,53 @@
+<div class="filter">
+  <div class="filter-button" (click)="toggleDropdown()">
+    {{ title }}
+    @if (selectedItems.length) {
+    <span class="badge">{{ selectedItems.length }}</span>
+    }
+  </div>
+  @if (isOpen) {
+  <div class="filter-content">
+    @for (item of items; track $index) {
+    <div class="filter-item">
+      <input
+        type="checkbox"
+        id="checkbox-{{ item }}"
+        [checked]="selectedItems.includes(item)"
+        (change)="onItemSelect(item)"
+        class="checkbox"
+      />
+      <label
+        for="checkbox-{{ item }}"
+        class="checkbox-label"
+        [class.selected]="selectedItems.includes(item)"
+      >
+        {{ item }}
+      </label>
+    </div>
+    } @if (isSortable) {
+    <label class="sort-label">
+      <input
+        type="radio"
+        name="sort"
+        value="asc"
+        (change)="onSortChange('asc')"
+        [checked]="sortOrder === 'asc'"
+        class="sort"
+      />
+      Более старые
+    </label>
+    <label class="sort-label">
+      <input
+        type="radio"
+        name="sort"
+        value="desc"
+        (change)="onSortChange('desc')"
+        [checked]="sortOrder === 'desc'"
+        class="sort"
+      />
+      Более новые
+    </label>
+    }
+  </div>
+  }
+</div>

@@ -1,0 +1,91 @@
+<div class="main-content">
+  <h1>Треки</h1>
+  <div class="filter-box">
+    <p>Искать по:</p>
+    <app-select
+      [title]="'Исполнителю'"
+      [items]="authors"
+      (selectionChange)="searchFilterService.updateAuthorFilter($event)"
+    ></app-select>
+    <app-select
+      [title]="'Жанру'"
+      [items]="genres"
+      (selectionChange)="searchFilterService.updateGenreFilter($event)"
+    ></app-select>
+    <app-select
+      [title]="'Году выпуска'"
+      [items]="[]"
+      [isSortable]="true"
+      (sortChange)="searchFilterService.updateSort($event)"
+    ></app-select>
+  </div>
+  @if (isLoading) {
+  <app-skeleton></app-skeleton>
+  } @else {
+  <div class="track-box">
+    <div class="track-box-content track-box-content-head">
+      <div>ТРЕК</div>
+      <div>ИСПОЛНИТЕЛЬ</div>
+      <div>АЛЬБОМ</div>
+      <div>
+        <app-clock-icon class="span"></app-clock-icon>
+      </div>
+    </div>
+    <div class="track-box-container">
+      @for (track of filteredTracks; track $index) {
+      <div
+        class="track-box-content"
+        (click)="playTrack(track)"
+      >
+        <div class="track-title">
+          <app-track-icon class="svg-icon-track"></app-track-icon>
+          {{ track.name }}
+        </div>
+        <div class="track-author">
+          {{ track.author }}
+        </div>
+        <div class="album">
+          <span class="span">{{ track.album }}</span>
+        </div>
+        <div class="track-time">
+          @if (track.isLiked) {
+          <app-dislike
+            class="svg-icon-heart"
+            (click)="onDisLike($event, track.id)"
+          ></app-dislike>
+          } @else {
+          <app-heart-icon
+            class="svg-icon-heart"
+            (click)="onLike($event, track.id)"
+          ></app-heart-icon>
+          }
+          {{ track.duration_in_seconds | timeFormatPipe }}
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+  }
+</div>
+<div class="right-side-menu">
+  <div class="playlist-box">
+    @if (isLoading) {
+    <app-skeleton-img></app-skeleton-img>
+    <app-skeleton-img></app-skeleton-img>
+    <app-skeleton-img></app-skeleton-img>
+    } @else {
+    <app-playlist-day
+      class="svg-icon"
+      (click)="onNavigate('playlist_day')"
+    ></app-playlist-day>
+    <app-playlist-hits
+      class="svg-icon"
+      (click)="onNavigate('playlist_hundred')"
+    ></app-playlist-hits>
+    <app-playlist-indi
+      class="svg-icon"
+      (click)="onNavigate('playlist_indi')"
+    ></app-playlist-indi>
+    }
+  </div>
+</div>

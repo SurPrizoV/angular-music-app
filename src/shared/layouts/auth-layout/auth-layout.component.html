@@ -1,0 +1,11 @@
+<div class="auth-container">
+  @if (showMessage) {
+    <div class="auth-form">
+      <p>Успешная регистрация! Пожалуйста, войдите.</p>
+    </div>
+  }
+  <div class="auth-form">
+    <app-logo class="logo"></app-logo>
+    <router-outlet></router-outlet>
+</div>
+</div>
