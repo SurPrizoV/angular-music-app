@@ -1,5 +1,8 @@
 @import "./shared/variables.scss";
 
+// REVIEW как сейчас поступают в целом нужно сбрасывать все стили через библиотечки или большим файлом в ручную? библиотекчки типа
+// https://www.npmjs.com/package/normalize-scss
+
 * {
   margin: 0;
   padding: 0;
