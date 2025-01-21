@@ -38,6 +38,7 @@
           <li (click)="logout()">Выйти</li>
           <li>
             @if (theme === 'dark') {
+              <!-- REVIEW я бы тут отступил, но это дело стиля написания кода. -->
             <app-moon (click)="toggleTheme()"></app-moon>
             } @else {
             <app-sun (click)="toggleTheme()"></app-sun>
