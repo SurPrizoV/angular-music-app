@@ -12,6 +12,7 @@ import { PlayerService } from './player.service';
 import { envUser } from '../../app/environments/environment';
 import { AuthResponse, User } from '../interfaces';
 
+// REVIEW в целом неплохая практика делать описание для сервиса.
 @Injectable({
   providedIn: 'root',
 })
@@ -33,6 +34,14 @@ export class AuthService {
     return localStorage.getItem('accessToken') || '';
   }
 
+  // REVIEW так же все буличные методы должны иметь описание в особо важных методах еще можно описать паремтры и что ожидаем.
+  // https://jsdoc.app/
+  // например
+  /**
+   * Логирование пользователя.
+   * @param user Данные пользователя для логирования
+   * @returns {Observable<AuthResponse>}
+   */
   login(user: User): Observable<AuthResponse> {
     localStorage.setItem('mail', user.email);
     return this.http

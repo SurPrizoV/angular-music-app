@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
+// TRACEVIEW дай описание и напиши тесте. для пайпов их писать не сложно зато пакажешь что четкий пацан и магешь в тестах.
 @Pipe({
   name: 'timeFormatPipe',
   standalone: true,

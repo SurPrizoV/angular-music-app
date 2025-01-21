@@ -1,4 +1,5 @@
 // REVIEW не понял. В папке environmets буду складываться переменные окружения?
+// если это что то глобальное может constants
 import { Env } from './interface';
 
 export const envUser: Env = {

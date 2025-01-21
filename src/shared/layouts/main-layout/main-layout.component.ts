@@ -42,17 +42,20 @@ import { Track } from '../../interfaces';
   styleUrl: './main-layout.component.scss',
 })
 export class MainLayoutComponent implements OnInit, OnDestroy {
+  // TRACEVIEW все публичные методы и свойства должны быть с описанием.
   theme: string = 'dark';
   searchTrack: string = '';
   isOpen: boolean = false;
+  // REVIEW Опиши сначала публичине поля и после сгрупируй приватные поля так удобно читать класс и в целом распространненая практика.
   private routerSubscription: Subscription | null = null;
   currentTrack?: Track | null;
 
   constructor(
-    private searchFilterService: SearchFilterService,
-    private router: Router,
-    private authService: AuthService,
-    private playerService: PlayerService
+    // REVIEW закроме максимально методы.
+    private readonly searchFilterService: SearchFilterService,
+    private readonly router: Router,
+    private readonly authService: AuthService,
+    private readonly playerService: PlayerService
   ) {}
 
   ngOnInit() {
@@ -68,30 +71,38 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     });
   }
 
+  // REVIEW а вот приватные методы можно опускать совсем вниз после protected методов хотя допускается располагать их рядом бубличными
+  // методами показывая тем сама тесную связь методов и то что приватный метод используется только в функция рядом. В таком случае
+  // приватный метод будет ниже.
+  // в данном случае можно опустить вниз.
   private resetMenuAndSearch() {
     this.isOpen = false;
     this.searchTrack = '';
     this.searchFilterService.updateSearch(this.searchTrack);
   }
 
-  onSearchChange(value: string) {
+  // REVIEW модификатор доступа protected уменьшает видимость метода из вне. По идеи обработчик события не должен быть видет из вне класса.
+  // а только лишь для шаблона.
+  // Наружу должны торчать только те методы и свойства которые мы хотим. Ничего лишнего недолжно быть видно из вне.
+  protected onSearchChange(value: string) {
     this.searchFilterService.updateSearch(value);
   }
 
-  toggleOpen = () => {
+  protected toggleOpen = () => {
     this.isOpen = !this.isOpen;
   };
 
-  toggleTheme = () => {
+  protected toggleTheme = () => {
     this.theme = this.theme === 'dark' ? 'light' : 'dark';
     document.body.setAttribute('data-theme', this.theme);
   };
 
-  logout() {
+  protected logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
 
+  // REVIEW тоже бы поднять наверх до конструктора
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     if (
@@ -105,6 +116,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     }
   }
 
+  // REVIEW Методы жизненного цикла лучше размещать после конструктора, это позволяет ожидать в нужном месте класса описания этих методов.
   ngOnDestroy() {
     this.routerSubscription?.unsubscribe();
   }

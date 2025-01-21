@@ -7,6 +7,9 @@ import { Track } from '../interfaces';
   providedIn: 'root',
 })
 export class PlayerService {
+  // REVIEW я бы на оборот описал сначала публичне свойства
+  // до публичных обычно описывают dependency injection через angular метод inject
+  // а вот реализация в виде приватных свойств будет интресовать позже.
   private audio = new Audio();
   private trackList: Track[] = [];
   private currentIndex = 0;
@@ -28,6 +31,7 @@ export class PlayerService {
     });
   }
 
+  //  REVIEW все публичные методы должны иметь описание, если что то сложное можно дополнить через jsdoc
   setTracks(tracks: Track[]) {
     this.trackList = tracks;
     this.currentIndex = 0;
