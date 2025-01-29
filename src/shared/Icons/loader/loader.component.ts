@@ -28,7 +28,7 @@ import { Component } from '@angular/core';
         width: 5rem;
         height: 5rem;
         border: 5px solid rgba(255, 255, 255, 0.3);
-        border-top-color: #ffffff;
+        border-top-color: #ffffff; // <- определение цвета вне файла variables
         border-radius: 50%;
         animation: spin 1s linear infinite;
       }

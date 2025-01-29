@@ -16,7 +16,7 @@ button {
 .button {
   &-login {
     margin-top: 4rem;
-    background: #580ea2;
+    background: #580ea2; // <- определение цвета вне файла variables
     color: #fff;
     transition: all 0.3s;
     &:hover {

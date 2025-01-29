@@ -19,13 +19,13 @@ export class TracksAPIService {
   /**
    * Субъект, который хранит список треков, полученных из API.
    * Объявлен как `Subject`, чтобы другие компоненты могли подписаться и получать обновления.
-   * @public
+   * @public // забыл убрать?
    */
   protected readonly tracksSubject = new Subject<Track[]>();
 
   /**
    * Наблюдаемый поток для треков, который может быть использован для подписки на обновления.
-   * @public
+   * @public // аналогично?
    */
   protected readonly tracks$ = this.tracksSubject.asObservable();
 
