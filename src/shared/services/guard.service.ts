@@ -13,8 +13,31 @@ import { AuthService } from './auth.service';
 @Injectable({
   providedIn: 'root',
 })
+/**
+ * Сервис для обработки активации маршрутов на основе статуса аутентификации пользователя.
+ * Реализует интерфейс CanActivate для ограничения доступа к маршрутам на основе статуса аутентификации.
+ */
 export class GuardService implements CanActivate {
-  constructor(private authService: AuthService, private router: Router) {}
+  /**
+   * Создает экземпляр сервиса GuardService.
+   *
+   * @param {AuthService} authService - Сервис аутентификации, используемый для проверки, авторизован ли пользователь.
+   * @param {Router} router - Роутер, используемый для навигации, если пользователь не авторизован.
+   */
+  constructor(
+    private readonly authService: AuthService,
+    private readonly router: Router
+  ) {}
+  /**
+   * Определяет, можно ли активировать маршрут на основе статуса аутентификации пользователя.
+   * Если пользователь авторизован, маршрут может быть активирован. В противном случае пользователь будет перенаправлен на страницу входа.
+   *
+   * @param {ActivatedRouteSnapshot} route - Текущий снимок маршрута.
+   * @param {RouterStateSnapshot} state - Текущий снимок состояния роутера.
+   * @returns {MaybeAsync<GuardResult>} Логическое значение или промис, который разрешается в логическое значение, указывающее, можно ли активировать маршрут.
+   *
+   * @throws {Error} Выбрасывает ошибку, если пользователь не авторизован и не может получить доступ к маршруту.
+   */
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot

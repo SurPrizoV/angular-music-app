@@ -10,6 +10,18 @@ import { catchError, Observable, switchMap, throwError } from 'rxjs';
 
 import { AuthService } from './services/auth.service';
 
+/**
+ * Интерсептор HTTP-запросов для добавления авторизационного токена в заголовки запросов.
+ * Также обрабатывает ошибки с кодом 401 (Unauthorized) для автоматического обновления токена с использованием refresh token.
+ * При ошибке обновления токена выполняется выход из системы.
+ *
+ * @param {HttpRequest<any>} req - HTTP запрос, к которому применяется интерсептор.
+ * @param {HttpHandlerFn} next - Следующий обработчик запроса, к которому будет передан (и модифицированный) запрос.
+ * @returns {Observable<HttpEvent<any>>} Наблюдаемый поток с событием HTTP, который может быть результатом отправки запроса.
+ *
+ * @throws {HttpErrorResponse} В случае ошибки при выполнении запроса или обновления токена, ошибка будет проброшена дальше.
+ */
+
 export const authInterceptor: HttpInterceptorFn = (
   req: HttpRequest<any>,
   next: HttpHandlerFn

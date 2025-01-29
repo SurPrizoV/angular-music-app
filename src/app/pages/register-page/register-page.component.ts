@@ -33,11 +33,17 @@ import { User } from '../../../shared/interfaces';
 })
 export class RegisterPageComponent implements OnInit {
   form!: FormGroup;
+  /** Флаг для перевода кнопки в состояние disabled. */
   disabled!: boolean;
+  /** Флаг для скрытия/отображения пароля. */
   showPass!: boolean;
+  /** Флаг для скрытия/отображения повтора пароля. */
   showRepeatPass!: boolean;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly router: Router
+  ) {}
 
   ngOnInit() {
     this.form = new FormGroup(
@@ -57,7 +63,7 @@ export class RegisterPageComponent implements OnInit {
     return this.authService.error;
   }
 
-  submit() {
+  protected submit() {
     if (this.form.invalid) {
       return;
     }
@@ -77,14 +83,15 @@ export class RegisterPageComponent implements OnInit {
     });
   }
 
-  toggleShowPass() {
+  protected toggleShowPass() {
     this.showPass = !this.showPass;
   }
 
-  toggleShowRepeatPass() {
+  protected toggleShowRepeatPass() {
     this.showRepeatPass = !this.showRepeatPass;
   }
 
+  /** Кастомный валидатор для проверки на совпадение паролей. */
   private passEqual(group: AbstractControl): ValidationErrors | null {
     const password = group.get('password');
     const repeatPassword = group.get('repeatPassword');

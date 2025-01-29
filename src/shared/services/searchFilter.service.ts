@@ -9,28 +9,55 @@ import { Track } from '../interfaces';
 @Injectable({
   providedIn: 'root',
 })
+/**
+ * Сервис для управления фильтрацией, сортировкой и перемешиванием списка треков.
+ *
+ * Позволяет:
+ * - Искать треки по названию.
+ * - Фильтровать треки по автору и жанру.
+ * - Сортировать треки по дате релиза (по возрастанию или убыванию).
+ * - Перемешивать треки случайным образом.
+ *
+ * Использует `BehaviorSubject` для хранения состояний фильтров и `RxJS combineLatest` для
+ * динамической фильтрации списка треков при изменении параметров.
+ */
 export class SearchFilterService {
-  private tracksSubj = new BehaviorSubject<Track[]>([]);
-  private searchSubj = new BehaviorSubject<string>('');
-  private authorFilterSubj = new BehaviorSubject<string[]>([]);
-  private genreFilterSubj = new BehaviorSubject<string[]>([]);
-  private sortSubj = new BehaviorSubject<'asc' | 'desc'>('asc');
-  private shuffleSubj = new BehaviorSubject<boolean>(false);
+  /** Список всех треков. */
+  private readonly tracksSubj = new BehaviorSubject<Track[]>([]);
+  /** Строка для поиска. */
+  private readonly searchSubj = new BehaviorSubject<string>('');
+  /** Фильтры для позиции автора. */
+  private readonly authorFilterSubj = new BehaviorSubject<string[]>([]);
+  /** Фильтры для позиции жанра. */
+  private readonly genreFilterSubj = new BehaviorSubject<string[]>([]);
+  /** Сортировка по дате. */
+  private readonly sortSubj = new BehaviorSubject<'asc' | 'desc'>('asc');
+  /** Режим перемешивания треков. */
+  private readonly shuffleSubj = new BehaviorSubject<boolean>(false);
 
-  tracks$ = this.tracksSubj.asObservable();
-  search$ = this.searchSubj.asObservable();
-  authorFilter$ = this.authorFilterSubj.asObservable();
-  genreFilter$ = this.genreFilterSubj.asObservable();
-  sort$ = this.sortSubj.asObservable();
+  protected tracks$ = this.tracksSubj.asObservable();
+  protected search$ = this.searchSubj.asObservable();
+  protected authorFilter$ = this.authorFilterSubj.asObservable();
+  protected genreFilter$ = this.genreFilterSubj.asObservable();
+  protected sort$ = this.sortSubj.asObservable();
   shuffle$ = this.shuffleSubj.asObservable();
 
-  constructor(private playerService: PlayerService) {}
+  constructor(private readonly playerService: PlayerService) {}
 
+  /**
+   * Устанавливает новый список треков.
+   * @param {Track[]} tracks - Список треков.
+   */
   setTracks(tracks: Track[]) {
     this.tracksSubj.next(tracks);
     this.filterTracks();
   }
 
+  /**
+   * Обновляет данные конкретного трека.
+   * @param {number} id - Идентификатор трека.
+   * @param {Partial<Track>} changes - Объект с измененными полями трека.
+   */
   updateTrack(id: number, changes: Partial<Track>) {
     const updatedTracks = this.tracksSubj.value.map((track) =>
       track.id === id ? { ...track, ...changes } : track
@@ -38,26 +65,50 @@ export class SearchFilterService {
     this.tracksSubj.next(updatedTracks);
   }
 
+  /**
+   * Обновляет поисковый запрос.
+   * @param {string} value - Новая строка поиска.
+   */
   updateSearch(value: string) {
     this.searchSubj.next(value);
   }
 
+  /**
+   * Обновляет фильтр по авторам.
+   * @param {string[]} authors - Список выбранных авторов.
+   */
   updateAuthorFilter(authors: string[]) {
     this.authorFilterSubj.next(authors);
   }
 
+  /**
+   * Обновляет фильтр по жанрам.
+   * @param {string[]} genres - Список выбранных жанров.
+   */
   updateGenreFilter(genres: string[]) {
     this.genreFilterSubj.next(genres);
   }
 
+  /**
+   * Устанавливает порядок сортировки треков.
+   * @param {'asc' | 'desc'} order - 'asc' (по возрастанию) или 'desc' (по убыванию).
+   */
   updateSort(order: 'asc' | 'desc') {
     this.sortSubj.next(order);
   }
 
+  /**
+   * Включает или выключает перемешивание треков.
+   * @param {boolean} isShuffle - `true`, если треки должны быть перемешаны.
+   */
   toggleShuffle(isShuffle: boolean) {
     this.shuffleSubj.next(isShuffle);
   }
 
+  /**
+   * Фильтрует, сортирует и перемешивает треки на основе установленных параметров.
+   * @returns {Observable<Track[]>} Поток отфильтрованных и отсортированных треков.
+   */
   filterTracks() {
     return combineLatest([
       this.tracks$,
@@ -67,49 +118,58 @@ export class SearchFilterService {
       this.sort$,
       this.shuffle$,
     ]).pipe(
-      map(([tracks, searchTerm, selectedAuthors, selectedGenres, sortOrder, shuffle]) => {
-        let filteredTracks = [...tracks];
+      map(
+        ([
+          tracks,
+          searchTerm,
+          selectedAuthors,
+          selectedGenres,
+          sortOrder,
+          shuffle,
+        ]) => {
+          let filteredTracks = [...tracks];
 
-        if (searchTerm.trim()) {
-          filteredTracks = filteredTracks.filter((track) =>
-            track.name.toLowerCase().includes(searchTerm.toLowerCase())
-          );
-        }
-
-        if (selectedAuthors.length > 0) {
-          filteredTracks = filteredTracks.filter((track) =>
-            selectedAuthors.includes(track.author)
-          );
-        }
-
-        if (selectedGenres.length > 0) {
-          filteredTracks = filteredTracks.filter((track) =>
-            selectedGenres.includes(track.genre)
-          );
-        }
-
-        if (sortOrder) {
-          filteredTracks = filteredTracks.sort((a, b) => {
-            const dateA = new Date(a.release_date).getTime();
-            const dateB = new Date(b.release_date).getTime();
-            return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
-          });
-        }
-
-        if (shuffle) {
-          for (let i = filteredTracks.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [filteredTracks[i], filteredTracks[j]] = [
-              filteredTracks[j],
-              filteredTracks[i],
-            ];
+          if (searchTerm.trim()) {
+            filteredTracks = filteredTracks.filter((track) =>
+              track.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
           }
+
+          if (selectedAuthors.length > 0) {
+            filteredTracks = filteredTracks.filter((track) =>
+              selectedAuthors.includes(track.author)
+            );
+          }
+
+          if (selectedGenres.length > 0) {
+            filteredTracks = filteredTracks.filter((track) =>
+              selectedGenres.includes(track.genre)
+            );
+          }
+
+          if (sortOrder) {
+            filteredTracks = filteredTracks.sort((a, b) => {
+              const dateA = new Date(a.release_date).getTime();
+              const dateB = new Date(b.release_date).getTime();
+              return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+            });
+          }
+
+          if (shuffle) {
+            for (let i = filteredTracks.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [filteredTracks[i], filteredTracks[j]] = [
+                filteredTracks[j],
+                filteredTracks[i],
+              ];
+            }
+          }
+
+          this.playerService.setTracks(filteredTracks);
+
+          return filteredTracks;
         }
-
-        this.playerService.setTracks(filteredTracks);
-
-        return filteredTracks;
-      })
+      )
     );
   }
 }

@@ -1,11 +1,11 @@
-import { Env } from './interface';
+import { Link } from './interface';
 
-export const envUser: Env = {
+export const userLink: Link = {
   baseURL: 'https://skypro-music-api.skyeng.tech',
   URLcatalog: 'user',
 };
 
-export const envTrack: Env = {
+export const trackLink: Link = {
   baseURL: 'https://skypro-music-api.skyeng.tech/catalog',
   URLcatalog: 'track',
   other: 'selection',

@@ -28,13 +28,15 @@ import { Track } from '../../../shared/interfaces';
   templateUrl: './playlist-indi-page.component.html',
 })
 export class PlaylistIndiPageComponent implements OnInit {
+  /** Список отсортированных треков по поиску. */
   filteredTracks: Track[] = [];
+  /** Флаг для отображения скелетона. */
   isLoading: boolean = false;
 
   constructor(
-    private tracksAPIService: TracksAPIService,
+    private readonly tracksAPIService: TracksAPIService,
     public searchFilterService: SearchFilterService,
-    private playerService: PlayerService
+    private readonly playerService: PlayerService
   ) {}
 
   ngOnInit() {
@@ -43,7 +45,7 @@ export class PlaylistIndiPageComponent implements OnInit {
       next: (tracks: Track[]) => {
         tracks = tracks.map((track) => ({
           ...track,
-          isLiked: track.stared_user.some(
+          is_liked: track.stared_user.some(
             (user) => user.email === localStorage.getItem('mail')
           ),
         }));
@@ -60,7 +62,7 @@ export class PlaylistIndiPageComponent implements OnInit {
     });
   }
 
-  playTrack(track: Track) {
+  protected playTrack(track: Track) {
     const trackIndex = this.filteredTracks.findIndex((t) => t.id === track.id);
     if (trackIndex !== -1) {
       this.playerService.setTracks(this.filteredTracks);
@@ -69,12 +71,12 @@ export class PlaylistIndiPageComponent implements OnInit {
     }
   }
 
-  onLike(event: MouseEvent, id: number) {
+  protected onLike(event: MouseEvent, id: number) {
     event.stopPropagation();
     this.tracksAPIService.addTrackInFavorite(id).subscribe();
   }
 
-  onDisLike(event: MouseEvent, id: number) {
+  protected onDisLike(event: MouseEvent, id: number) {
     event.stopPropagation();
     this.tracksAPIService.removeTrackFromFavorite(id).subscribe();
   }

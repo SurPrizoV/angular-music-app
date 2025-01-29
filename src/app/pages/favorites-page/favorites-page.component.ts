@@ -26,13 +26,15 @@ import { Track } from '../../../shared/interfaces';
   templateUrl: './favorites-page.component.html',
 })
 export class FavoritesPageComponent implements OnInit {
-  filteredTracks: Track[] = [];
-  isLoading: boolean = false;
+  /** Список треков, пропущенных через фильтр поиска. */
+  protected filteredTracks: Track[] = [];
+  /** Флаг загрузки для отображения skeleton. */
+  protected isLoading: boolean = false;
 
   constructor(
-    private tracksAPIService: TracksAPIService,
-    public searchFilterService: SearchFilterService,
-    private playerService: PlayerService
+    private readonly tracksAPIService: TracksAPIService,
+    public readonly searchFilterService: SearchFilterService,
+    private readonly playerService: PlayerService
   ) {}
 
   ngOnInit() {
@@ -51,7 +53,7 @@ export class FavoritesPageComponent implements OnInit {
     });
   }
 
-  playTrack(track: Track) {
+  protected playTrack(track: Track) {
     const trackIndex = this.filteredTracks.findIndex((t) => t.id === track.id);
     if (trackIndex !== -1) {
       this.playerService.setTracks(this.filteredTracks);
@@ -60,7 +62,7 @@ export class FavoritesPageComponent implements OnInit {
     }
   }
 
-  onDisLike(event: MouseEvent, id: number) {
+  protected onDisLike(event: MouseEvent, id: number) {
     event.stopPropagation();
     this.tracksAPIService.removeTrackFromFavorite(id).subscribe({
       next: () => {

@@ -39,18 +39,25 @@ import { Track } from '../../interfaces';
   styleUrl: './player.component.scss',
 })
 export class PlayerComponent implements OnInit {
-  currentTrack?: Track | null;
-  play?: boolean;
-  duration: number = 0;
-  currentTime: number = 0;
-  isShuffle?: boolean;
-  originalOrder: Track[] = [];
-  repeatMode?: string = 'none';
+  /** Выбранный для проигрывания трек. */
+  protected currentTrack?: Track | null;
+  /** Флаг для состояния проигрывания трека, чтоб отобразить play/pause. */
+  protected play?: boolean;
+  /** Длительность трека для верхней границы в инпуте. */
+  protected duration: number = 0;
+  /** Время трека для отображения полосы проигрывания. */
+  protected currentTime: number = 0;
+  /** Флаг для перемешивания треков. */
+  protected isShuffle?: boolean;
+  /** Массив для оригинального списка треков, чтоб вернуть к исходному состоянию. */
+  protected originalOrder: Track[] = [];
+  /** Флаг для режима повтора треков/трека. */
+  protected repeatMode?: string = 'none';
 
   constructor(
-    private playerService: PlayerService,
-    private searchFilterService: SearchFilterService,
-    private tracksAPIService: TracksAPIService
+    private readonly playerService: PlayerService,
+    private readonly searchFilterService: SearchFilterService,
+    private readonly tracksAPIService: TracksAPIService
   ) {}
 
   ngOnInit() {
@@ -79,36 +86,36 @@ export class PlayerComponent implements OnInit {
     });
   }
 
-  onSeek(event: Event) {
+  protected onSeek(event: Event) {
     this.playerService.seekTo((event.target as HTMLInputElement).valueAsNumber);
   }
 
-  onVolumeChange(event: Event) {
+  protected onVolumeChange(event: Event) {
     this.playerService.setVolume(
       (event.target as HTMLInputElement).valueAsNumber
     );
   }
 
-  onPrevious() {
+  protected onPrevious() {
     this.playerService.previous();
   }
 
-  onPlayPause() {
+  protected onPlayPause() {
     this.playerService.isPlaying$.value
       ? this.playerService.pause()
       : this.playerService.play();
   }
 
-  onNext() {
+  protected onNext() {
     this.playerService.next();
   }
 
-  setRepeatMode(mode: 'none' | 'track' | 'all') {
+  protected setRepeatMode(mode: 'none' | 'track' | 'all') {
     this.playerService.setRepeatMode(mode);
     this.repeatMode = mode;
   }
 
-  toggleShuffle() {
+  protected toggleShuffle() {
     this.isShuffle = !this.isShuffle;
 
     if (this.isShuffle) {
@@ -119,11 +126,11 @@ export class PlayerComponent implements OnInit {
     }
   }
 
-  onLike(id: number) {
+  protected onLike(id: number) {
     this.tracksAPIService.addTrackInFavorite(id).subscribe();
   }
 
-  onDisLike(id: number) {
+  protected onDisLike(id: number) {
     this.tracksAPIService.removeTrackFromFavorite(id).subscribe();
   }
 }

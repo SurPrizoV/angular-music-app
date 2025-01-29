@@ -42,18 +42,38 @@ import { Track } from '../../interfaces';
   styleUrl: './main-layout.component.scss',
 })
 export class MainLayoutComponent implements OnInit, OnDestroy {
-  theme: string = 'dark';
-  searchTrack: string = '';
-  isOpen: boolean = false;
+  /** Флаг для определения темы оформления. */
+  protected theme: string = 'dark';
+  /** Строка для фильтрации треков из поиска. */
+  protected searchTrack: string = '';
+  /** Флаг состояния открыто/закрыто боковое меню. */
+  protected isOpen: boolean = false;
+  /** Выбранный трек для проигрывания в плеере. */
+  protected currentTrack?: Track | null;
+
+  /** Переменная для хранения подписки на события маршрутизатора. */
   private routerSubscription: Subscription | null = null;
-  currentTrack?: Track | null;
 
   constructor(
-    private searchFilterService: SearchFilterService,
-    private router: Router,
-    private authService: AuthService,
-    private playerService: PlayerService
+    private readonly searchFilterService: SearchFilterService,
+    private readonly router: Router,
+    private readonly authService: AuthService,
+    private readonly playerService: PlayerService
   ) {}
+
+  /** Функция для обработчика клика вне бокового меню, чтобы оно закрывалось. */
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (
+      this.isOpen &&
+      document.querySelector('.left-side-menu-box') &&
+      !document
+        .querySelector('.left-side-menu-box')!
+        .contains(event.target as HTMLElement)
+    ) {
+      this.isOpen = false;
+    }
+  }
 
   ngOnInit() {
     document.body.setAttribute('data-theme', this.theme);
@@ -68,44 +88,31 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     });
   }
 
-  private resetMenuAndSearch() {
-    this.isOpen = false;
-    this.searchTrack = '';
-    this.searchFilterService.updateSearch(this.searchTrack);
+  ngOnDestroy() {
+    this.routerSubscription?.unsubscribe();
   }
 
-  onSearchChange(value: string) {
+  protected onSearchChange(value: string) {
     this.searchFilterService.updateSearch(value);
   }
 
-  toggleOpen = () => {
+  protected toggleOpen = () => {
     this.isOpen = !this.isOpen;
   };
 
-  toggleTheme = () => {
+  protected toggleTheme = () => {
     this.theme = this.theme === 'dark' ? 'light' : 'dark';
     document.body.setAttribute('data-theme', this.theme);
   };
 
-  logout() {
+  protected logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
 
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent) {
-    if (
-      this.isOpen &&
-      document.querySelector('.left-side-menu-box') &&
-      !document
-        .querySelector('.left-side-menu-box')!
-        .contains(event.target as HTMLElement)
-    ) {
-      this.isOpen = false;
-    }
-  }
-
-  ngOnDestroy() {
-    this.routerSubscription?.unsubscribe();
+  private resetMenuAndSearch() {
+    this.isOpen = false;
+    this.searchTrack = '';
+    this.searchFilterService.updateSearch(this.searchTrack);
   }
 }

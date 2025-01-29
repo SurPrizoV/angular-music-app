@@ -30,12 +30,18 @@ import { User } from '../../../shared/interfaces';
   styleUrl: './login-page.component.scss',
 })
 export class LoginPageComponent implements OnInit {
-  form!: FormGroup;
-  disabled!: boolean;
-  showPass!: boolean;
-  isLoading: boolean = false;
+  protected form!: FormGroup;
+  /** Флаг для перевода кнопки в состояние disabled. */
+  protected disabled!: boolean;
+  /** Флаг для скрытия/отображения пароля. */
+  protected showPass!: boolean;
+  /** Флаг для отображения состояния загрузки. */
+  protected isLoading: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly router: Router
+  ) {}
 
   ngOnInit() {
     this.form = new FormGroup({
@@ -51,7 +57,7 @@ export class LoginPageComponent implements OnInit {
     return this.authService.error;
   }
 
-  submit() {
+  protected submit() {
     if (this.form.invalid) {
       return;
     }
@@ -74,7 +80,7 @@ export class LoginPageComponent implements OnInit {
     });
   }
 
-  toggleShowPass() {
+  protected toggleShowPass() {
     this.showPass = !this.showPass;
   }
 }

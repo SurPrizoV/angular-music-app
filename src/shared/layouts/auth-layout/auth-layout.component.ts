@@ -11,19 +11,23 @@ import { LogoComponent } from '../../Icons/logo/logo.component';
   styleUrl: './auth-layout.component.scss',
 })
 export class AuthLayoutComponent implements OnInit {
-  showMessage: boolean = false;
+  /** Флаг для отображения сообщения подтверждения регистрации. */
+  protected showMessage: boolean = false;
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(
+    private readonly route: ActivatedRoute,
+    private readonly router: Router
+  ) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe((p) => {
       if (p['success']) {
-        this.showMessage = true
+        this.showMessage = true;
 
         setTimeout(() => {
-          this.showMessage = false
-        }, 3000)
+          this.showMessage = false;
+        }, 3000);
       }
-    })
+    });
   }
 }

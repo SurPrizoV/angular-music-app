@@ -40,16 +40,20 @@ import { Track } from '../../../shared/interfaces';
   styleUrl: './main-page.component.scss',
 })
 export class MainPageComponent implements OnInit {
-  filteredTracks: Track[] = [];
-  authors: string[] = [];
-  genres: string[] = [];
-  isLoading: boolean = false;
+  /** Список отсортированных треков по поиску, жанру, автору и году. */
+  protected filteredTracks: Track[] = [];
+  /** Список авторов для фильтрации. */
+  protected authors: string[] = [];
+  /** Список жанров для фильтрации. */
+  protected genres: string[] = [];
+  /** Флаг для отображения скелетона. */
+  protected isLoading: boolean = false;
 
   constructor(
-    private router: Router,
-    private tracksAPIService: TracksAPIService,
-    public searchFilterService: SearchFilterService,
-    private playerService: PlayerService
+    private readonly router: Router,
+    private readonly tracksAPIService: TracksAPIService,
+    public readonly searchFilterService: SearchFilterService,
+    private readonly playerService: PlayerService
   ) {}
 
   ngOnInit() {
@@ -59,7 +63,7 @@ export class MainPageComponent implements OnInit {
         this.isLoading = true;
         tracks = tracks.map((track) => ({
           ...track,
-          isLiked: track.stared_user.some(
+          is_liked: track.stared_user.some(
             (user) => user.email === localStorage.getItem('mail')
           ),
         }));
@@ -81,7 +85,7 @@ export class MainPageComponent implements OnInit {
     });
   }
 
-  playTrack(track: Track) {
+  protected playTrack(track: Track) {
     const trackIndex = this.filteredTracks.findIndex((t) => t.id === track.id);
     if (trackIndex !== -1) {
       this.playerService.setTracks(this.filteredTracks);
@@ -90,17 +94,17 @@ export class MainPageComponent implements OnInit {
     }
   }
 
-  onLike(event: MouseEvent, id: number) {
+  protected onLike(event: MouseEvent, id: number) {
     event.stopPropagation();
     this.tracksAPIService.addTrackInFavorite(id).subscribe();
   }
 
-  onDisLike(event: MouseEvent, id: number) {
+  protected onDisLike(event: MouseEvent, id: number) {
     event.stopPropagation();
     this.tracksAPIService.removeTrackFromFavorite(id).subscribe();
   }
 
-  onNavigate(param: string) {
+  protected onNavigate(param: string) {
     this.router.navigate([`/${param}`]);
   }
 }

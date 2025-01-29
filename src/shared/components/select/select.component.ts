@@ -17,19 +17,34 @@ import { SelectService } from '../../services/select.service';
   styleUrls: ['./select.component.scss'],
 })
 export class SelectComponent {
+  /** Имя селекта. */
   @Input() title!: string;
+  /** Список пунктов селекта. */
   @Input() items: string[] = [];
+  /** Флаг для отображения сортированы/не сортированы. */
   @Input() isSortable = false;
+  /** Выбранные пункты селекта. */
   @Output() selectionChange = new EventEmitter<string[]>();
+  /** Вариант сортировки, сначала новые/сначала старые. */
   @Output() sortChange = new EventEmitter<'asc' | 'desc'>();
 
-  isOpen = false;
-  selectedItems: string[] = [];
-  sortOrder: 'asc' | 'desc' = 'asc';
+  /**  Флаг для определения открыт/закрыт селект. */
+  protected isOpen = false;
+  /** Список выбранных элементов. */
+  protected selectedItems: string[] = [];
+  protected sortOrder: 'asc' | 'desc' = 'asc';
 
-  constructor(private selectService: SelectService) {}
+  constructor(private readonly selectService: SelectService) {}
 
-  toggleDropdown() {
+  /** Функция для обработчика клика вне селекта, чтобы он закрывался. */
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (this.isOpen && !(event.target as HTMLElement).closest('.filter')) {
+      this.close();
+    }
+  }
+
+  protected toggleDropdown() {
     this.isOpen = !this.isOpen;
     if (this.isOpen) {
       this.selectService.toggle(this);
@@ -43,7 +58,7 @@ export class SelectComponent {
     this.selectService.unregister(this);
   }
 
-  onItemSelect(item: string) {
+  protected onItemSelect(item: string) {
     const index = this.selectedItems.indexOf(item);
     if (index > -1) {
       this.selectedItems.splice(index, 1);
@@ -53,15 +68,8 @@ export class SelectComponent {
     this.selectionChange.emit(this.selectedItems);
   }
 
-  onSortChange(order: 'asc' | 'desc') {
+  protected onSortChange(order: 'asc' | 'desc') {
     this.sortOrder = order;
     this.sortChange.emit(order);
-  }
-
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent) {
-    if (this.isOpen && !(event.target as HTMLElement).closest('.filter')) {
-      this.close();
-    }
   }
 }

@@ -25,7 +25,7 @@
         <span class="span">{{ track.album }}</span>
       </div>
       <div class="track-time">
-        @if (track.isLiked) {
+        @if (track.is_liked) {
         <app-dislike
           class="svg-icon-heart"
           (click)="onDisLike($event, track.id)"

@@ -9,35 +9,55 @@ import { Router } from '@angular/router';
 
 import { PlayerService } from './player.service';
 
-import { envUser } from '../../app/environments/environment';
+import { userLink } from './APILinks/links';
 import { AuthResponse, User } from '../interfaces';
 
 @Injectable({
   providedIn: 'root',
 })
+/**
+ * Сервис для аутентификации и управления пользователем.
+ *
+ * Позволяет:
+ * - Регистрировать нового пользователя.
+ * - Авторизовывать пользователя.
+ * - Обновлять токен доступа.
+ * - Выходить из системы.
+ * - Проверять статус аутентификации.
+ *
+ * Хранит токены доступа и обновления в `localStorage` и автоматически
+ * обновляет их при необходимости.
+ */
 export class AuthService {
-  headers: HttpHeaders = new HttpHeaders({
+  protected headers: HttpHeaders = new HttpHeaders({
     'content-type': 'application/json',
   });
+  /** Сообщение об ошибке при аутентификации. */
   error!: string;
 
-  private refreshTokenInterval: any;
+  /** Интервал для автоматического обновления токена. */
+  private readonly refreshTokenInterval: any;
 
   constructor(
-    private http: HttpClient,
-    private router: Router,
-    private playerService: PlayerService
+    private readonly http: HttpClient,
+    private readonly router: Router,
+    private readonly playerService: PlayerService
   ) {}
 
   get token(): string {
     return localStorage.getItem('accessToken') || '';
   }
 
+  /**
+   * Авторизует пользователя.
+   * @param {User} user - Данные пользователя (email и пароль).
+   * @returns {Observable<AuthResponse>} Ответ API с токенами.
+   */
   login(user: User): Observable<AuthResponse> {
     localStorage.setItem('mail', user.email);
     return this.http
       .post<AuthResponse>(
-        `${envUser.baseURL}/${envUser.URLcatalog}/login/`,
+        `${userLink.baseURL}/${userLink.URLcatalog}/login/`,
         JSON.stringify(user),
         {
           headers: this.headers,
@@ -59,10 +79,15 @@ export class AuthService {
       );
   }
 
+  /**
+   * Получает новый токен по данным пользователя.
+   * @param {User} user - Данные пользователя.
+   * @returns {Observable<AuthResponse>} Ответ API с токенами.
+   */
   getToken(user: User): Observable<AuthResponse> {
     return this.http
       .post<AuthResponse>(
-        `${envUser.baseURL}/${envUser.URLcatalog}/token/`,
+        `${userLink.baseURL}/${userLink.URLcatalog}/token/`,
         JSON.stringify(user),
         {
           headers: this.headers,
@@ -82,10 +107,15 @@ export class AuthService {
       );
   }
 
+  /**
+   * Обновляет токен доступа.
+   * @param {string} token - Токен обновления.
+   * @returns {Observable<AuthResponse>} Ответ API с новым токеном доступа.
+   */
   refreshToken(token: string): Observable<AuthResponse> {
     return this.http
       .post<AuthResponse>(
-        `${envUser.baseURL}/${envUser.URLcatalog}/token/refresh/`,
+        `${userLink.baseURL}/${userLink.URLcatalog}/token/refresh/`,
         JSON.stringify({
           refresh: token,
         }),
@@ -102,10 +132,15 @@ export class AuthService {
       );
   }
 
+  /**
+   * Регистрирует нового пользователя.
+   * @param {User} user - Данные пользователя.
+   * @returns {Observable<AuthResponse>} Ответ API с токенами.
+   */
   register(user: User): Observable<AuthResponse> {
     return this.http
       .post<AuthResponse>(
-        `${envUser.baseURL}/${envUser.URLcatalog}/signup/`,
+        `${userLink.baseURL}/${userLink.URLcatalog}/signup/`,
         JSON.stringify(user),
         {
           headers: this.headers,
@@ -123,6 +158,9 @@ export class AuthService {
       );
   }
 
+  /**
+   * Выходит из системы, очищая токены и данные пользователя.
+   */
   logout() {
     this.playerService.resetTrack();
     localStorage.removeItem('accessToken');
@@ -134,10 +172,18 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
+  /**
+   * Проверяет, авторизован ли пользователь.
+   * @returns {boolean} `true`, если у пользователя есть токен доступа.
+   */
   isAuth(): boolean {
     return !!this.token;
   }
 
+  /**
+   * Сохраняет токены в `localStorage`.
+   * @param {AuthResponse} response - Ответ API с токенами.
+   */
   setToken(response: AuthResponse): void {
     localStorage.setItem('accessToken', response.access);
     if (response.refresh) {
@@ -145,6 +191,11 @@ export class AuthService {
     }
   }
 
+  /**
+   * Форматирует ошибки от бэкенда в строку.
+   * @param {{ [key: string]: string[] }} errors - Объект ошибок.
+   * @returns {string} Отформатированное сообщение об ошибке.
+   */
   private formatBackendErrors(errors: { [key: string]: string[] }): string {
     const errorMessages: string[] = [];
     Object.keys(errors).forEach((key) => {
