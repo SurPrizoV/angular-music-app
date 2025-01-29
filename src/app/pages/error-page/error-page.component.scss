@@ -29,12 +29,12 @@ button {
   padding: 1.6rem 4.5rem;
   margin-top: 3.4rem;
   border-radius: 0.6rem;
-  background: #580ea2;
-  color: #fff;
+  background: #580ea2; // <- было бы неплохо все цвета определить в переменные.
+  color: #fff; // <- определение цвета вне файла variables
   transition: all 0.3s;
   &:hover {
     transform: scale(1.02);
-    background: #7737b8;
+    background: #7737b8; // <- увидел что цвет используется в трех местах. уж точно надо выносить в variables.
   }
   &:disabled {
     background: #d3d3d3;

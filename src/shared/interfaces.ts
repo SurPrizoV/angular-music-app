@@ -1,9 +1,9 @@
 export interface Track {
+  id: number;
   album: string;
   author: string;
   duration_in_seconds: number;
   genre: string;
-  id: number;
   name: string;
   release_date: Date;
   stared_user: User[];

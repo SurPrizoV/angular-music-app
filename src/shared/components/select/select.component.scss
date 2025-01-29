@@ -34,7 +34,7 @@
 }
 
 .badge {
-  background: #ad61ff;
+  background: #ad61ff; // <- определение цвета вне файла variables
   color: var(--text-primary);
   border-radius: 50%;
   padding: 0.5rem 1rem;

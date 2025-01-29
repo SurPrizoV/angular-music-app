@@ -43,7 +43,8 @@ import { Track } from '../../interfaces';
 })
 export class MainLayoutComponent implements OnInit, OnDestroy {
   /** Флаг для определения темы оформления. */
-  protected theme: string = 'dark';
+  // если переменная вполне опеделена можно поступит так:
+  protected theme: 'dark' | 'light' = 'dark' ;
   /** Строка для фильтрации треков из поиска. */
   protected searchTrack: string = '';
   /** Флаг состояния открыто/закрыто боковое меню. */

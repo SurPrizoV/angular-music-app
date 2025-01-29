@@ -1,5 +1,5 @@
 .auth-container {
-  background: #181818;
+  background: #181818; // <- определение цвета вне файла variables
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -19,7 +19,7 @@
 .logo {
   display: flex;
   justify-content: center;
-  color: black;
+  color: black; // <- определение цвета вне файла variables
 }
 
 p {
