@@ -29,18 +29,12 @@ button {
   padding: 1.6rem 4.5rem;
   margin-top: 3.4rem;
   border-radius: 0.6rem;
-  background: #580ea2;
-  color: #fff;
+  background: var(--purple-button);
+  color: var(--white);
   transition: all 0.3s;
   &:hover {
     transform: scale(1.02);
-    background: #7737b8;
-  }
-  &:disabled {
-    background: #d3d3d3;
-    color: #a1a1a1;
-    cursor: not-allowed;
-    transform: none;
+    background: var(--hover-purple-button);
   }
 }
 

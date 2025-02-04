@@ -7,7 +7,8 @@ import {
 } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 import { LogoComponent } from '../../Icons/logo/logo.component';
 import { SearchIconComponent } from '../../Icons/search-icon/search-icon.component';
@@ -43,7 +44,7 @@ import { Track } from '../../interfaces';
 })
 export class MainLayoutComponent implements OnInit, OnDestroy {
   /** Флаг для определения темы оформления. */
-  protected theme: string = 'dark';
+  protected theme: 'dark' | 'light' = 'dark';
   /** Строка для фильтрации треков из поиска. */
   protected searchTrack: string = '';
   /** Флаг состояния открыто/закрыто боковое меню. */
@@ -53,6 +54,8 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
 
   /** Переменная для хранения подписки на события маршрутизатора. */
   private routerSubscription: Subscription | null = null;
+  /** Переменная для хранения строки поиска. */
+  protected searchSubject = new Subject<string>();
 
   constructor(
     private readonly searchFilterService: SearchFilterService,
@@ -85,6 +88,10 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
 
     this.playerService.currentTrack$.subscribe((track) => {
       this.currentTrack = track;
+    });
+
+    this.searchSubject.pipe(debounceTime(900)).subscribe((value) => {
+      this.onSearchChange(value);
     });
   }
 

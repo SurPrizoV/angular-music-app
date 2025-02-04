@@ -6,26 +6,23 @@ import { SearchFilterService } from './searchFilter.service';
 
 import { trackLink } from './APILinks/links';
 import { Collection, Track } from '../interfaces';
-
-@Injectable({
-  providedIn: 'root',
-})
 /**
  * Сервис для взаимодействия с API, который управляет треками.
  * Предоставляет методы для получения всех треков, коллекций треков, фаворитов,
  * а также добавления и удаления треков из списка избранных.
  */
+@Injectable({
+  providedIn: 'root',
+})
 export class TracksAPIService {
   /**
    * Субъект, который хранит список треков, полученных из API.
    * Объявлен как `Subject`, чтобы другие компоненты могли подписаться и получать обновления.
-   * @public
    */
   protected readonly tracksSubject = new Subject<Track[]>();
 
   /**
    * Наблюдаемый поток для треков, который может быть использован для подписки на обновления.
-   * @public
    */
   protected readonly tracks$ = this.tracksSubject.asObservable();
 

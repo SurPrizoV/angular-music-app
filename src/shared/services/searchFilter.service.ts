@@ -5,10 +5,6 @@ import { map } from 'rxjs/operators';
 import { PlayerService } from './player.service';
 
 import { Track } from '../interfaces';
-
-@Injectable({
-  providedIn: 'root',
-})
 /**
  * Сервис для управления фильтрацией, сортировкой и перемешиванием списка треков.
  *
@@ -21,6 +17,9 @@ import { Track } from '../interfaces';
  * Использует `BehaviorSubject` для хранения состояний фильтров и `RxJS combineLatest` для
  * динамической фильтрации списка треков при изменении параметров.
  */
+@Injectable({
+  providedIn: 'root',
+})
 export class SearchFilterService {
   /** Список всех треков. */
   private readonly tracksSubj = new BehaviorSubject<Track[]>([]);

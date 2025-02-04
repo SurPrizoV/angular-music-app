@@ -12,9 +12,6 @@ import { PlayerService } from './player.service';
 import { userLink } from './APILinks/links';
 import { AuthResponse, User } from '../interfaces';
 
-@Injectable({
-  providedIn: 'root',
-})
 /**
  * Сервис для аутентификации и управления пользователем.
  *
@@ -28,6 +25,10 @@ import { AuthResponse, User } from '../interfaces';
  * Хранит токены доступа и обновления в `localStorage` и автоматически
  * обновляет их при необходимости.
  */
+
+@Injectable({
+  providedIn: 'root',
+})
 export class AuthService {
   protected headers: HttpHeaders = new HttpHeaders({
     'content-type': 'application/json',

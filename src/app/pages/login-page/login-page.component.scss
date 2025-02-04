@@ -16,16 +16,16 @@ button {
 .button {
   &-login {
     margin-top: 4rem;
-    background: #580ea2;
-    color: #fff;
+    background: var(--purple-button);
+    color: var(--white);
     transition: all 0.3s;
     &:hover {
       transform: scale(1.02);
-      background: #7737b8;
+      background: var(--hover-purple-button);
     }
     &:disabled {
-      background: #d3d3d3;
-      color: #a1a1a1;
+      background: var(--disabled-background);
+      color: var(--disabled-font);
       cursor: not-allowed;
       transform: none;
     }

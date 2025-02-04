@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 
 import { SelectComponent } from '../components/select/select.component';
-
-@Injectable({
-  providedIn: 'root',
-})
 /**
  * Сервис для управления состоянием активного элемента SelectComponent.
  * Позволяет регистрировать, удалять регистрацию и переключать активные селекты.
  */
+@Injectable({
+  providedIn: 'root',
+})
 export class SelectService {
   /**
    * Текущий активный элемент SelectComponent.

@@ -1,49 +1,59 @@
-body[data-theme='dark'] {
-    --background-primary: #181818;
-    --background-secondary: #1c1c1c;
-    --background-tertiary: #313131;
-    --background-bar:rgba(28, 28, 28, 0.5);
-    --background-progress: #2E2E2E;
-    --svg-primary: #d9d9d9;
-    --svg-secondary: #696969;
-    --color-burger: #d3d3d3;
-    --text-primary: #FFF;
-    --text-secondary: #4e4e4e;
-    --button-hover: #d9b6ff;
-    --button-active: #ad61ff;
-    --hover-primary: #D9B6FF;
-    --hover-secondary: #acacac;
-    --hover-tertiary: #696969;
-    --active-primary: #AD61FF;
-    --active-secondary: #fff;
-    --active-tertiary: #696969;
-    --active-stroke: #fff;
-    --volume-primary: #fff;
-    --volume-secondary: #797979;
-    --volume-slider-bg: #1a1a1a;
-  }
-  
-  body[data-theme='light'] {
-    --background-primary: #fff;
-    --background-secondary: #F6F5F3;
-    --background-tertiary: #F6F4F4;
-    --background-bar: rgba(255, 255, 255, 0.5);
-    --background-progress: #D9D9D9;
-    --svg-primary: #b1b1b1;
-    --svg-secondary: #b1b1b1;
-    --color-burger: #000;
-    --text-primary: #000;
-    --text-secondary: #b1b1b1;
-    --button-hover: #580ea2;
-    --button-active: #ad61ff;
-    --hover-primary: #580EA2;
-    --hover-secondary: #707070;
-    --hover-tertiary: #707070;
-    --active-primary: #AD61FF;
-    --active-secondary: #000;
-    --active-tertiary: #AD61FF;
-    --active-stroke: #AD61FF;
-    --volume-primary: #b1b1b1;
-    --volume-secondary: #c4c4c4;
-    --volume-slider-bg: #fff;
-  }
+:root {
+  --purple-button: #580ea2;
+  --hover-purple-button: #7737b8;
+  --disabled-background: #d3d3d3;
+  --disabled-font: #a1a1a1;
+  --white: #fff;
+  --black: #000;
+  --background-primary: #181818;
+}
+
+body[data-theme="dark"] {
+  --background-primary: #181818;
+  --background-secondary: #1c1c1c;
+  --background-tertiary: #313131;
+  --background-bar: rgba(28, 28, 28, 0.5);
+  --background-progress: #2e2e2e;
+  --svg-primary: #d9d9d9;
+  --svg-secondary: #696969;
+  --color-burger: #d3d3d3;
+  --text-primary: #fff;
+  --text-secondary: #4e4e4e;
+  --button-hover: #d9b6ff;
+  --button-active: #ad61ff;
+  --hover-primary: #d9b6ff;
+  --hover-secondary: #acacac;
+  --hover-tertiary: #696969;
+  --active-primary: #ad61ff;
+  --active-secondary: #fff;
+  --active-tertiary: #696969;
+  --active-stroke: #fff;
+  --volume-primary: #fff;
+  --volume-secondary: #797979;
+  --volume-slider-bg: #1a1a1a;
+}
+
+body[data-theme="light"] {
+  --background-primary: #fff;
+  --background-secondary: #f6f5f3;
+  --background-tertiary: #f6f4f4;
+  --background-bar: rgba(255, 255, 255, 0.5);
+  --background-progress: #d9d9d9;
+  --svg-primary: #b1b1b1;
+  --svg-secondary: #b1b1b1;
+  --color-burger: #000;
+  --text-primary: #000;
+  --text-secondary: #b1b1b1;
+  --button-hover: #580ea2;
+  --button-active: #ad61ff;
+  --hover-primary: #580ea2;
+  --hover-secondary: #707070;
+  --hover-tertiary: #707070;
+  --active-primary: #ad61ff;
+  --active-secondary: #000;
+  --active-tertiary: #ad61ff;
+  --active-stroke: #ad61ff;
+  --volume-primary: #b1b1b1;
+  --volume-secondary: #c4c4c4;
+  --volume-slider-bg: #fff;
+}

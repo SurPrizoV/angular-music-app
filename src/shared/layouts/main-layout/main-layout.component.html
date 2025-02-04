@@ -9,7 +9,7 @@
         type="text"
         placeholder="Поиск"
         [(ngModel)]="searchTrack"
-        (ngModelChange)="onSearchChange($event)"
+        (ngModelChange)="searchSubject.next($event)"
       />
     </div>
     <app-logout-icon
