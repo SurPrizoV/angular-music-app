@@ -39,6 +39,8 @@
   </div>
   @if (error) {
   <small class="error">{{ error }}</small>
+  } @if (errorMessage) {
+  <small class="error">{{ errorMessage }}</small>
   } @if (isLoading) {
   <app-loader></app-loader>
   }

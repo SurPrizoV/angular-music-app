@@ -14,6 +14,7 @@ import { LoaderComponent } from '../../../shared/Icons/loader/loader.component';
 import { AuthService } from '../../../shared/services/auth.service';
 
 import { User } from '../../../shared/interfaces';
+import { catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-login-page',
@@ -37,6 +38,8 @@ export class LoginPageComponent implements OnInit {
   protected showPass!: boolean;
   /** Флаг для отображения состояния загрузки. */
   protected isLoading: boolean = false;
+  /** Для сообщения об ошибке */
+  protected errorMessage?: string;
 
   constructor(
     private readonly authService: AuthService,
@@ -70,14 +73,24 @@ export class LoginPageComponent implements OnInit {
       password: this.form.value.password,
     };
 
-    this.authService.login(user).subscribe(() => {
-      this.authService.getToken(user).subscribe(() => {
-        this.form.reset();
-        this.router.navigate(['/']);
-        this.disabled = false;
-        this.isLoading = false;
+    this.authService
+      .login(user)
+      .pipe(
+        catchError((error) => {
+          this.errorMessage = error.statusText;
+          this.disabled = false;
+          this.isLoading = false;
+          return of(null);
+        })
+      )
+      .subscribe(() => {
+        this.authService.getToken(user).subscribe(() => {
+          this.form.reset();
+          this.router.navigate(['/']);
+          this.disabled = false;
+          this.isLoading = false;
+        });
       });
-    });
   }
 
   protected toggleShowPass() {

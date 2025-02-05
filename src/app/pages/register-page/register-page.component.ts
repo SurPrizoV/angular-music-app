@@ -16,6 +16,8 @@ import { CloseEyeComponent } from '../../../shared/Icons/close-eye/close-eye.com
 import { AuthService } from '../../../shared/services/auth.service';
 
 import { User } from '../../../shared/interfaces';
+import { catchError, of } from 'rxjs';
+import { LoaderComponent } from "../../../shared/Icons/loader/loader.component";
 
 @Component({
   selector: 'app-register-page',
@@ -27,7 +29,8 @@ import { User } from '../../../shared/interfaces';
     ReactiveFormsModule,
     EyeComponent,
     CloseEyeComponent,
-  ],
+    LoaderComponent
+],
   templateUrl: './register-page.component.html',
   styleUrl: './register-page.component.scss',
 })
@@ -39,6 +42,10 @@ export class RegisterPageComponent implements OnInit {
   showPass!: boolean;
   /** Флаг для скрытия/отображения повтора пароля. */
   showRepeatPass!: boolean;
+  /** Флаг для отображения состояния загрузки. */
+  protected isLoading: boolean = false;
+  /** Для сообщения об ошибке */
+  protected errorMessage?: string;
 
   constructor(
     private readonly authService: AuthService,
@@ -69,6 +76,7 @@ export class RegisterPageComponent implements OnInit {
     }
 
     this.disabled = true;
+    this.isLoading = true;
 
     const user: User = {
       username: this.form.value.email,
@@ -76,11 +84,22 @@ export class RegisterPageComponent implements OnInit {
       password: this.form.value.password,
     };
 
-    this.authService.register(user).subscribe(() => {
-      this.form.reset();
-      this.router.navigate(['/login'], { queryParams: { success: true } });
-      this.disabled = false;
-    });
+    this.authService
+      .register(user)
+      .pipe(
+        catchError((error) => {
+          this.errorMessage = error.statusText;
+          this.disabled = false;
+          this.isLoading = false;
+          return of(null);
+        })
+      )
+      .subscribe(() => {
+        this.form.reset();
+        this.router.navigate(['/login'], { queryParams: { success: true } });
+        this.disabled = false;
+        this.isLoading = false;
+      });
   }
 
   protected toggleShowPass() {
