@@ -16,8 +16,8 @@ import { CloseEyeComponent } from '../../../shared/Icons/close-eye/close-eye.com
 import { AuthService } from '../../../shared/services/auth.service';
 
 import { User } from '../../../shared/interfaces';
-import { catchError, of } from 'rxjs';
-import { LoaderComponent } from "../../../shared/Icons/loader/loader.component";
+import { catchError, throwError } from 'rxjs';
+import { LoaderComponent } from '../../../shared/Icons/loader/loader.component';
 
 @Component({
   selector: 'app-register-page',
@@ -29,8 +29,8 @@ import { LoaderComponent } from "../../../shared/Icons/loader/loader.component";
     ReactiveFormsModule,
     EyeComponent,
     CloseEyeComponent,
-    LoaderComponent
-],
+    LoaderComponent,
+  ],
   templateUrl: './register-page.component.html',
   styleUrl: './register-page.component.scss',
 })
@@ -91,7 +91,7 @@ export class RegisterPageComponent implements OnInit {
           this.errorMessage = error.statusText;
           this.disabled = false;
           this.isLoading = false;
-          return of(null);
+          return throwError(() => error);
         })
       )
       .subscribe(() => {
