@@ -63,7 +63,7 @@ export class MainPageComponent implements OnInit {
         this.isLoading = true;
         tracks = tracks.map((track) => ({
           ...track,
-          is_liked: track.stared_user.some(
+          isLiked: track.stared.some(
             (user) => user.email === localStorage.getItem('mail')
           ),
         }));

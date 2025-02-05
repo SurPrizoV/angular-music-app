@@ -5,7 +5,7 @@ import { map, Observable, Subject, tap } from 'rxjs';
 import { SearchFilterService } from './searchFilter.service';
 
 import { trackLink } from './APILinks/links';
-import { Collection, Track } from '../interfaces';
+import { Collection, Track, TrackFromBackend } from '../interfaces';
 /**
  * Сервис для взаимодействия с API, который управляет треками.
  * Предоставляет методы для получения всех треков, коллекций треков, фаворитов,
@@ -45,8 +45,13 @@ export class TracksAPIService {
    */
   getTracks(): Observable<Track[]> {
     return this.http
-      .get<Track[]>(`${trackLink.baseURL}/${trackLink.URLcatalog}/all/`)
-      .pipe(tap((tracks) => this.searchFilterService.setTracks(tracks)));
+      .get<TrackFromBackend[]>(
+        `${trackLink.baseURL}/${trackLink.URLcatalog}/all/`
+      )
+      .pipe(
+        map((tracks) => tracks.map(this.transformTrack)),
+        tap((tracks) => this.searchFilterService.setTracks(tracks))
+      );
   }
 
   /**
@@ -60,7 +65,9 @@ export class TracksAPIService {
     return this.http
       .get<Collection>(`${trackLink.baseURL}/${trackLink.other}/${id}/`)
       .pipe(
-        map((collection: Collection) => collection.items),
+        map((collection: Collection) =>
+          collection.items.map(this.transformTrack)
+        ),
         tap((tracks) => this.searchFilterService.setTracks(tracks))
       );
   }
@@ -72,9 +79,11 @@ export class TracksAPIService {
    * @returns {Observable<Track[]>} Наблюдаемый поток с массивом избранных треков.
    */
   getFavoriteTracks(): Observable<Track[]> {
-    return this.http.get<Track[]>(
-      `${trackLink.baseURL}/${trackLink.URLcatalog}/favorite/all/`
-    );
+    return this.http
+      .get<TrackFromBackend[]>(
+        `${trackLink.baseURL}/${trackLink.URLcatalog}/favorite/all/`
+      )
+      .pipe(map((tracks) => tracks.map(this.transformTrack)));
   }
 
   /**
@@ -88,7 +97,7 @@ export class TracksAPIService {
     return this.http
       .post(`${trackLink.baseURL}/${trackLink.URLcatalog}/${id}/favorite/`, {})
       .pipe(
-        tap(() => this.searchFilterService.updateTrack(id, { is_liked: true }))
+        tap(() => this.searchFilterService.updateTrack(id, { isLiked: true }))
       );
   }
 
@@ -103,7 +112,25 @@ export class TracksAPIService {
     return this.http
       .delete(`${trackLink.baseURL}/${trackLink.URLcatalog}/${id}/favorite/`)
       .pipe(
-        tap(() => this.searchFilterService.updateTrack(id, { is_liked: false }))
+        tap(() => this.searchFilterService.updateTrack(id, { isLiked: false }))
       );
+  }
+
+  /**
+   * Форматирует трек с бэкенда из snake_сase в camelCase.
+   */
+  private transformTrack(track: TrackFromBackend): Track {
+    return {
+      id: track.id,
+      album: track.album,
+      author: track.author,
+      duration: track.duration_in_seconds,
+      genre: track.genre,
+      name: track.name,
+      release: track.release_date,
+      stared: track.stared_user,
+      track: track.track_file,
+      isLiked: track.is_liked,
+    };
   }
 }

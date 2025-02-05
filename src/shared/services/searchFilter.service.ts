@@ -148,8 +148,8 @@ export class SearchFilterService {
 
           if (sortOrder) {
             filteredTracks = filteredTracks.sort((a, b) => {
-              const dateA = new Date(a.release_date).getTime();
-              const dateB = new Date(b.release_date).getTime();
+              const dateA = new Date(a.release).getTime();
+              const dateB = new Date(b.release).getTime();
               return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
             });
           }

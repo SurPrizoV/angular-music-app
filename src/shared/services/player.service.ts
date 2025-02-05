@@ -169,7 +169,7 @@ export class PlayerService {
 
     if (track) {
       this.audio.pause();
-      this.audio.src = track.track_file;
+      this.audio.src = track.track;
       this.audio.currentTime = 0;
 
       if (this.isPlaying$.value) {

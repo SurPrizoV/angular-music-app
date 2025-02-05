@@ -29,7 +29,7 @@
           class="svg-icon-heart"
           (click)="onDisLike($event, track.id)"
         ></app-dislike>
-        {{ track.duration_in_seconds | timeFormatPipe }}
+        {{ track.duration | timeFormatPipe }}
       </div>
     </div>
     }

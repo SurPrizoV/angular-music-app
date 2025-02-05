@@ -1,4 +1,4 @@
-export interface Track {
+export interface TrackFromBackend {
   id: number;
   album: string;
   author: string;
@@ -12,9 +12,22 @@ export interface Track {
   is_liked?: boolean;
 }
 
+export interface Track {
+  id: number;
+  album: string;
+  author: string;
+  duration: number;
+  genre: string;
+  name: string;
+  release: Date;
+  stared: User[];
+  track: string;
+  isLiked?: boolean;
+}
+
 export interface Collection {
   id: number;
-  items: Track[];
+  items: TrackFromBackend[];
   name: string;
   owner: string;
 }
