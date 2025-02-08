@@ -22,11 +22,14 @@ FROM nginx:stable-alpine
 # Копируем собранное приложение из первого этапа в директорию Nginx
 COPY --from=build-stage /app/dist/browser/. /usr/share/nginx/html
 
+# Подставляем переменную окружения PORT в nginx.conf
+RUN envsubst '$PORT' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf
+
 # Копируем кастомный конфиг Nginx, если есть
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Открываем порт
-EXPOSE 80
+EXPOSE $PORT
 
 # Стартуем Nginx
 CMD ["nginx", "-g", "daemon off;"]
