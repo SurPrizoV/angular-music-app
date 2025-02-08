@@ -26,7 +26,7 @@ COPY --from=build-stage /app/dist/browser/. /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Открываем порт
-EXPOSE $PORT
+EXPOSE 80
 
 # Стартуем Nginx
 CMD ["nginx", "-g", "daemon off;"]
