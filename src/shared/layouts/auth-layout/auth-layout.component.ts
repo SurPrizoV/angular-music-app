@@ -16,7 +16,7 @@ export class AuthLayoutComponent implements OnInit {
 
   constructor(
     private readonly route: ActivatedRoute,
-    private readonly router: Router
+    private readonly router: Router // <-- не используется же? линтер бы чтобы увидеть не используемые методы.
   ) {}
 
   ngOnInit() {
