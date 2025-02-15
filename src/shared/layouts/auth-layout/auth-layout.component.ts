@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import { LogoComponent } from '../../Icons/logo/logo.component';
 
@@ -14,10 +14,7 @@ export class AuthLayoutComponent implements OnInit {
   /** Флаг для отображения сообщения подтверждения регистрации. */
   protected showMessage: boolean = false;
 
-  constructor(
-    private readonly route: ActivatedRoute,
-    private readonly router: Router
-  ) {}
+  constructor(private readonly route: ActivatedRoute) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe((p) => {
