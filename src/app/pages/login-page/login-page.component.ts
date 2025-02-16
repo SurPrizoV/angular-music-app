@@ -13,8 +13,8 @@ import { CloseEyeComponent } from '../../../shared/Icons/close-eye/close-eye.com
 import { LoaderComponent } from '../../../shared/Icons/loader/loader.component';
 import { AuthService } from '../../../shared/services/auth.service';
 
-import { User } from '../../../shared/interfaces';
 import { catchError, of } from 'rxjs';
+import { User, UserModel } from '../../../shared/types/user';
 
 @Component({
   selector: 'app-login-page',
@@ -68,10 +68,10 @@ export class LoginPageComponent implements OnInit {
     this.disabled = true;
     this.isLoading = true;
 
-    const user: User = {
+    const user = new UserModel({
       email: this.form.value.email,
       password: this.form.value.password,
-    };
+    });
 
     this.authService
       .login(user)

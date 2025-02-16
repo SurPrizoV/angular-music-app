@@ -3,8 +3,8 @@ import { BehaviorSubject, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { PlayerService } from './player.service';
+import type { Track } from '../types/track';
 
-import { Track } from '../interfaces';
 /**
  * Сервис для управления фильтрацией, сортировкой и перемешиванием списка треков.
  *

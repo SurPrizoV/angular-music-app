@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import type { Track } from '../types/track';
 
-import { Track } from '../interfaces';
 /**
  * Сервис для управления воспроизведением треков в плеере.
  * Предоставляет функциональность для воспроизведения, паузы, перемотки, изменения громкости и повторного воспроизведения треков.

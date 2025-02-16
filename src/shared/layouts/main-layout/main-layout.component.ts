@@ -20,8 +20,8 @@ import { PlayerComponent } from '../../components/player/player.component';
 import { SearchFilterService } from '../../services/searchFilter.service';
 import { AuthService } from '../../services/auth.service';
 import { PlayerService } from '../../services/player.service';
+import type { Track } from '../../types/track';
 
-import { Track } from '../../interfaces';
 
 @Component({
   selector: 'app-main-layout',

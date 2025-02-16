@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { SearchFilterService } from './searchFilter.service';
 import { PlayerService } from './player.service';
-import { Track } from '../interfaces';
+import type { Track } from '../types/track';
 
 describe('SearchFilterService', () => {
   let service: SearchFilterService;

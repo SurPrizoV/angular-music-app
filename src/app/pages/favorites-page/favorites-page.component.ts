@@ -10,7 +10,8 @@ import { PlayerService } from '../../../shared/services/player.service';
 import { TimeFormatPipe } from '../../../shared/pipes/time-format.pipe';
 import { SkeletonComponent } from '../../../shared/components/skeleton/skeleton.component';
 
-import { Track } from '../../../shared/interfaces';
+import type { Track } from '../../../shared/types/track';
+
 
 @Component({
   selector: 'app-favorites-page',

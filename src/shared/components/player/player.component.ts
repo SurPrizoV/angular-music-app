@@ -15,8 +15,8 @@ import { RepeatTrackComponent } from '../../Icons/repeat-track/repeat-track.comp
 import { PlayerService } from '../../services/player.service';
 import { SearchFilterService } from '../../services/searchFilter.service';
 import { TracksAPIService } from '../../services/tracksAPI.service';
+import type { Track } from '../../types/track';
 
-import { Track } from '../../interfaces';
 
 @Component({
   selector: 'app-player',

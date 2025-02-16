@@ -5,7 +5,9 @@ import { map, Observable, Subject, tap } from 'rxjs';
 import { SearchFilterService } from './searchFilter.service';
 
 import { trackLink } from './APILinks/links';
-import { Collection, Track, TrackFromBackend } from '../interfaces';
+import { Collection, TrackFromBackend } from '../interfaces';
+import { Track, TrackModel } from '../types/track';
+import { UserModel } from '../types/user';
 /**
  * Сервис для взаимодействия с API, который управляет треками.
  * Предоставляет методы для получения всех треков, коллекций треков, фаворитов,
@@ -49,7 +51,7 @@ export class TracksAPIService {
         `${trackLink.baseURL}/${trackLink.URLcatalog}/all/`
       )
       .pipe(
-        map((tracks) => tracks.map(this.transformTrack)),
+        map((tracks) => tracks.map((track) => new TrackModel(track, UserModel))),
         tap((tracks) => this.searchFilterService.setTracks(tracks))
       );
   }
@@ -66,7 +68,7 @@ export class TracksAPIService {
       .get<Collection>(`${trackLink.baseURL}/${trackLink.other}/${id}/`)
       .pipe(
         map((collection: Collection) =>
-          collection.items.map(this.transformTrack)
+          collection.items.map((track) => new TrackModel(track, UserModel))
         ),
         tap((tracks) => this.searchFilterService.setTracks(tracks))
       );
@@ -83,7 +85,7 @@ export class TracksAPIService {
       .get<TrackFromBackend[]>(
         `${trackLink.baseURL}/${trackLink.URLcatalog}/favorite/all/`
       )
-      .pipe(map((tracks) => tracks.map(this.transformTrack)));
+      .pipe(map((tracks) => tracks.map((track) => new TrackModel(track, UserModel))));
   }
 
   /**
@@ -116,21 +118,21 @@ export class TracksAPIService {
       );
   }
 
-  /**
-   * Форматирует трек с бэкенда из snake_сase в camelCase.
-   */
-  private transformTrack(track: TrackFromBackend): Track {
-    return {
-      id: track.id,
-      album: track.album,
-      author: track.author,
-      duration: track.duration_in_seconds,
-      genre: track.genre,
-      name: track.name,
-      release: track.release_date,
-      stared: track.stared_user,
-      track: track.track_file,
-      isLiked: track.is_liked,
-    };
-  }
+  // /**
+  //  * Форматирует трек с бэкенда из snake_сase в camelCase.
+  //  */
+  // private transformTrack(track: TrackFromBackend): Track {
+  //   return {
+  //     id: track.id,
+  //     album: track.album,
+  //     author: track.author,
+  //     duration: track.duration_in_seconds,
+  //     genre: track.genre,
+  //     name: track.name,
+  //     release: track.release_date,
+  //     stared: track.stared_user,
+  //     track: track.track_file,
+  //     isLiked: track.is_liked,
+  //   };
+  // }
 }

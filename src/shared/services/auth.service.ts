@@ -10,7 +10,10 @@ import { Router } from '@angular/router';
 import { PlayerService } from './player.service';
 
 import { userLink } from './APILinks/links';
-import { AuthResponse, User } from '../interfaces';
+import { AuthResponse } from '../interfaces';
+import type { User } from '../types/user';
+import { ToJSON } from '../types/model';
+import { UserRequest } from '../types/user.request';
 
 /**
  * Сервис для аутентификации и управления пользователем.
@@ -54,12 +57,12 @@ export class AuthService {
    * @param {User} user - Данные пользователя (email и пароль).
    * @returns {Observable<AuthResponse>} Ответ API с токенами.
    */
-  login(user: User): Observable<AuthResponse> {
+  login(user: User & ToJSON<UserRequest>): Observable<AuthResponse> {
     localStorage.setItem('mail', user.email);
     return this.http
       .post<AuthResponse>(
         `${userLink.baseURL}/${userLink.URLcatalog}/login/`,
-        JSON.stringify(user),
+        user.toJson(),
         {
           headers: this.headers,
         }
@@ -85,11 +88,11 @@ export class AuthService {
    * @param {User} user - Данные пользователя.
    * @returns {Observable<AuthResponse>} Ответ API с токенами.
    */
-  getToken(user: User): Observable<AuthResponse> {
+  getToken(user: ToJSON<UserRequest>): Observable<AuthResponse> {
     return this.http
       .post<AuthResponse>(
         `${userLink.baseURL}/${userLink.URLcatalog}/token/`,
-        JSON.stringify(user),
+        user.toJson(),
         {
           headers: this.headers,
         }
@@ -138,11 +141,11 @@ export class AuthService {
    * @param {User} user - Данные пользователя.
    * @returns {Observable<AuthResponse>} Ответ API с токенами.
    */
-  register(user: User): Observable<AuthResponse> {
+  register(user: ToJSON<UserRequest>): Observable<AuthResponse> {
     return this.http
       .post<AuthResponse>(
         `${userLink.baseURL}/${userLink.URLcatalog}/signup/`,
-        JSON.stringify(user),
+        user.toJson(),
         {
           headers: this.headers,
         }
