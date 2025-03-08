@@ -73,6 +73,7 @@ export class MainPageComponent implements OnInit {
         this.searchFilterService.setTracks(tracks);
 
         this.searchFilterService.filterTracks().subscribe((filteredTracks) => {
+          console.log('this.searchFilterService.filterTracks(). ::::', filteredTracks);
           this.filteredTracks = filteredTracks;
         });
 

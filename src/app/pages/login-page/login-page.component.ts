@@ -15,6 +15,7 @@ import { AuthService } from '../../../shared/services/auth.service';
 
 import { catchError, of } from 'rxjs';
 import { User, UserModel } from '../../../shared/types/user';
+import { AuthBase } from '../../../shared/types/auth';
 
 @Component({
   selector: 'app-login-page',
@@ -68,13 +69,13 @@ export class LoginPageComponent implements OnInit {
     this.disabled = true;
     this.isLoading = true;
 
-    const user = new UserModel({
+    const authBase: AuthBase = {
       email: this.form.value.email,
-      password: this.form.value.password,
-    });
+      password: this.form.value.password
+    }
 
     this.authService
-      .login(user)
+      .login(authBase)
       .pipe(
         catchError((error) => {
           this.errorMessage = error.statusText;
@@ -84,7 +85,7 @@ export class LoginPageComponent implements OnInit {
         })
       )
       .subscribe(() => {
-        this.authService.getToken(user).subscribe(() => {
+        this.authService.getToken(authBase).subscribe(() => {
           this.form.reset();
           this.router.navigate(['/']);
           this.disabled = false;

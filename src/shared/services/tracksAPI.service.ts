@@ -52,7 +52,10 @@ export class TracksAPIService {
       )
       .pipe(
         map((tracks) => tracks.map((track) => new TrackModel(track, UserModel))),
-        tap((tracks) => this.searchFilterService.setTracks(tracks))
+        tap((tracks) => {
+          console.log('api::::', tracks);
+          return this.searchFilterService.setTracks(tracks)
+      })
       );
   }
 

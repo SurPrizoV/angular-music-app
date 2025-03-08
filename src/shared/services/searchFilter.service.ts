@@ -148,6 +148,10 @@ export class SearchFilterService {
 
           if (sortOrder) {
             filteredTracks = filteredTracks.sort((a, b) => {
+              if (!a.release || !b.release) {
+                return -1;
+              }
+
               const dateA = new Date(a.release).getTime();
               const dateB = new Date(b.release).getTime();
               return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;

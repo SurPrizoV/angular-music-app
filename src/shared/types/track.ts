@@ -9,7 +9,7 @@ export interface Track {
   duration: number;
   genre: string;
   name: string;
-  release: Date;
+  release: Date | null;
   stared: User[];
   track: string;
   isLiked?: boolean;
@@ -23,7 +23,7 @@ export class TrackModel implements Track {
   private _duration: number;
   private _genre: string;
   private _name: string;
-  private _release: Date;
+  private _release: Date | null = null;
   private _stared: User[];
   private _track: string;
   private _isLiked?: boolean;
@@ -59,10 +59,9 @@ export class TrackModel implements Track {
     }
     this._name = response.name
 
-    if (!response.release_date) {
-      throw new Error('Expect release in Track response')
+    if (response.release_date) {
+      this._release = response.release_date
     }
-    this._release = response.release_date
 
     if (!response.stared_user) {
       throw new Error('Expect stared in Track response')
@@ -120,6 +119,4 @@ export class TrackModel implements Track {
   get isLiked() {
     return this._isLiked;
   }
-
-
 }

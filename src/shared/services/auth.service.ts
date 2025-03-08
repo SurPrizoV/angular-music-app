@@ -14,6 +14,7 @@ import { AuthResponse } from '../interfaces';
 import type { User } from '../types/user';
 import { ToJSON } from '../types/model';
 import { UserRequest } from '../types/user.request';
+import { AuthBase } from '../types/auth';
 
 /**
  * Сервис для аутентификации и управления пользователем.
@@ -57,12 +58,12 @@ export class AuthService {
    * @param {User} user - Данные пользователя (email и пароль).
    * @returns {Observable<AuthResponse>} Ответ API с токенами.
    */
-  login(user: User & ToJSON<UserRequest>): Observable<AuthResponse> {
-    localStorage.setItem('mail', user.email);
+  login(auth: AuthBase): Observable<AuthResponse> {
+    localStorage.setItem('mail', auth.email);
     return this.http
       .post<AuthResponse>(
         `${userLink.baseURL}/${userLink.URLcatalog}/login/`,
-        user.toJson(),
+        auth,
         {
           headers: this.headers,
         }
@@ -88,11 +89,11 @@ export class AuthService {
    * @param {User} user - Данные пользователя.
    * @returns {Observable<AuthResponse>} Ответ API с токенами.
    */
-  getToken(user: ToJSON<UserRequest>): Observable<AuthResponse> {
+  getToken(authBase: AuthBase): Observable<AuthResponse> {
     return this.http
       .post<AuthResponse>(
         `${userLink.baseURL}/${userLink.URLcatalog}/token/`,
-        user.toJson(),
+        authBase,
         {
           headers: this.headers,
         }

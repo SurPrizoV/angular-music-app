@@ -9,16 +9,12 @@ export interface User {
   /** Электронная почта пользователя. */
   email: string;
 
-  /** Пароль пользователя. */
-  password: string;
-
   /** Имя пользователя. */
   username?: string;
 }
 
 export class UserModel implements User, ToJSON<UserRequest> {
   private _email: string;
-  private _password: string;
   private _username: string | undefined;
 
   /** В конструктаре мы сделаем маппинг данных из апи в структуру с которой будет работать приложение
@@ -32,27 +28,17 @@ export class UserModel implements User, ToJSON<UserRequest> {
     }
     this._email = response.email;
 
-    if (!response.password) {
-      throw new Error('Expected password field for user')
-    }
-    this._password = response.password;
-
     this._username = response.username;
   }
 
   toJson(): UserRequest {
     return {
       email: this._email,
-      password: this._password,
     }
   }
 
   get email() {
     return this._email;
-  }
-
-  get password() {
-    return this._password;
   }
 
   get username() {
