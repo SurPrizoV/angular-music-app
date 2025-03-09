@@ -15,9 +15,9 @@ import { EyeComponent } from '../../../shared/Icons/eye/eye.component';
 import { CloseEyeComponent } from '../../../shared/Icons/close-eye/close-eye.component';
 import { AuthService } from '../../../shared/services/auth.service';
 
-import { User } from '../../../shared/interfaces';
 import { catchError, throwError } from 'rxjs';
 import { LoaderComponent } from '../../../shared/Icons/loader/loader.component';
+import { UserModel } from '../../../shared/types/user';
 
 @Component({
   selector: 'app-register-page',
@@ -78,17 +78,21 @@ export class RegisterPageComponent implements OnInit {
     this.disabled = true;
     this.isLoading = true;
 
-    const user: User = {
+    const user = new UserModel({
       username: this.form.value.email,
       email: this.form.value.email,
       password: this.form.value.password,
-    };
+    });
 
     this.authService
       .register(user)
       .pipe(
         catchError((error) => {
-          this.errorMessage = error.statusText;
+          if (error.statusText === 'Unknown Error') {
+            this.errorMessage = `Для дальнейшего пользования приложением, перейдите https://github.com/SurPrizoV/angular-music-app?tab=readme-ov-file в раздел Ошибки`;
+          } else {
+            this.errorMessage = error.statusText;
+          }
           this.disabled = false;
           this.isLoading = false;
           return throwError(() => error);

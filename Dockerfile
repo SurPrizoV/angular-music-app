@@ -20,7 +20,7 @@ RUN npm run build --configuration=production
 FROM nginx:stable-alpine
 
 # Копируем собранное приложение из первого этапа в директорию Nginx
-COPY --from=build-stage /app/dist/browser/. /usr/share/nginx/html
+COPY --from=build-stage /app/dist/angular-music-app/browser/. /usr/share/nginx/html
 
 # Копируем кастомный конфиг Nginx, если есть
 COPY nginx.conf /etc/nginx/conf.d/default.conf

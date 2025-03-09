@@ -17,7 +17,7 @@ import { SearchFilterService } from '../../../shared/services/searchFilter.servi
 import { PlayerService } from '../../../shared/services/player.service';
 import { TimeFormatPipe } from '../../../shared/pipes/time-format.pipe';
 
-import { Track } from '../../../shared/interfaces';
+import type { Track } from '../../../shared/types/track';
 
 @Component({
   selector: 'app-main-page',
@@ -61,12 +61,12 @@ export class MainPageComponent implements OnInit {
     this.tracksAPIService.getTracks().subscribe({
       next: (tracks: Track[]) => {
         this.isLoading = true;
-        tracks = tracks.map((track) => ({
-          ...track,
-          isLiked: track.stared.some(
+        for (const track of tracks) {
+          const isLiked = track.stared!.some(
             (user) => user.email === localStorage.getItem('mail')
-          ),
-        }));
+          );
+          track.isLiked = isLiked;
+        }
 
         this.authors = [...new Set(tracks.map((track) => track.author))];
         this.genres = [...new Set(tracks.map((track) => track.genre))];

@@ -11,7 +11,7 @@ import { PlayerService } from '../../../shared/services/player.service';
 import { SearchFilterService } from '../../../shared/services/searchFilter.service';
 import { TimeFormatPipe } from '../../../shared/pipes/time-format.pipe';
 
-import { Track } from '../../../shared/interfaces';
+import type { Track } from '../../../shared/types/track';
 
 @Component({
   selector: 'app-playlist-day-page',
@@ -43,12 +43,13 @@ export class PlaylistDayPageComponent implements OnInit {
     this.isLoading = true;
     this.tracksAPIService.getTrackCollectionById(1).subscribe({
       next: (tracks: Track[]) => {
-        tracks = tracks.map((track) => ({
-          ...track,
-          isLiked: track.stared.some(
+        for (const track of tracks) {
+          const isLiked = track.stared!.some(
             (user) => user.email === localStorage.getItem('mail')
-          ),
-        }));
+          );
+
+          track.isLiked = isLiked;
+        }
 
         this.searchFilterService.setTracks(tracks);
 

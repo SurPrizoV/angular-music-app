@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 
 import { PlayerService } from './player.service';
 
-import { Track } from '../interfaces';
+import type { Track } from '../types/track';
 /**
  * Сервис для управления фильтрацией, сортировкой и перемешиванием списка треков.
  *
@@ -57,10 +57,13 @@ export class SearchFilterService {
    * @param {number} id - Идентификатор трека.
    * @param {Partial<Track>} changes - Объект с измененными полями трека.
    */
-  updateTrack(id: number, changes: Partial<Track>) {
-    const updatedTracks = this.tracksSubj.value.map((track) =>
-      track.id === id ? { ...track, ...changes } : track
-    );
+  updateLikedTrack(id: number, isLiked: boolean) {
+    const updatedTracks = this.tracksSubj.value.map((track) => {
+      if (track.id === id) {
+        track.isLiked = isLiked;
+      }
+      return track;
+    });
     this.tracksSubj.next(updatedTracks);
   }
 
@@ -148,8 +151,8 @@ export class SearchFilterService {
 
           if (sortOrder) {
             filteredTracks = filteredTracks.sort((a, b) => {
-              const dateA = new Date(a.release).getTime();
-              const dateB = new Date(b.release).getTime();
+              const dateA = new Date(a.release!).getTime();
+              const dateB = new Date(b.release!).getTime();
               return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
             });
           }

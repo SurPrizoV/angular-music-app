@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { SearchFilterService } from './searchFilter.service';
 import { PlayerService } from './player.service';
-import { Track } from '../interfaces';
+import type { Track } from '../types/track';
 
 describe('SearchFilterService', () => {
   let service: SearchFilterService;
@@ -62,16 +62,6 @@ describe('SearchFilterService', () => {
   it('should set tracks', () => {
     service.setTracks(mockTracks);
     expect(service['tracksSubj'].value).toEqual(mockTracks);
-  });
-
-  it('should update track', () => {
-    service.setTracks(mockTracks);
-    service.updateTrack(1, { name: 'Updated Track 1' });
-
-    const updatedTrack = service['tracksSubj'].value.find(
-      (track) => track.id === 1
-    );
-    expect(updatedTrack?.name).toBe('Updated Track 1');
   });
 
   it('should filter tracks by search term', (done) => {

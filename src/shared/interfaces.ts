@@ -1,3 +1,5 @@
+import { User } from "./types/user";
+
 export interface TrackFromBackend {
   id: number;
   album: string;
@@ -12,30 +14,11 @@ export interface TrackFromBackend {
   is_liked?: boolean;
 }
 
-export interface Track {
-  id: number;
-  album: string;
-  author: string;
-  duration: number;
-  genre: string;
-  name: string;
-  release: Date;
-  stared: User[];
-  track: string;
-  isLiked?: boolean;
-}
-
 export interface Collection {
   id: number;
   items: TrackFromBackend[];
   name: string;
   owner: string;
-}
-
-export interface User {
-  email: string;
-  password: string;
-  username?: string;
 }
 
 export interface AuthResponse {

@@ -16,7 +16,7 @@ import { PlayerService } from '../../services/player.service';
 import { SearchFilterService } from '../../services/searchFilter.service';
 import { TracksAPIService } from '../../services/tracksAPI.service';
 
-import { Track } from '../../interfaces';
+import type { Track } from '../../types/track';
 
 @Component({
   selector: 'app-player',

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { PlayerService } from './player.service';
-import { Track } from '../interfaces';
+import type { Track } from '../types/track';
 
 describe('PlayerService', () => {
   let service: PlayerService;

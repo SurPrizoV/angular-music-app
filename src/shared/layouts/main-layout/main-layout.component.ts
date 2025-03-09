@@ -21,7 +21,7 @@ import { SearchFilterService } from '../../services/searchFilter.service';
 import { AuthService } from '../../services/auth.service';
 import { PlayerService } from '../../services/player.service';
 
-import { Track } from '../../interfaces';
+import type { Track } from '../../types/track';
 
 @Component({
   selector: 'app-main-layout',

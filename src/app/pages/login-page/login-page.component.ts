@@ -13,8 +13,9 @@ import { CloseEyeComponent } from '../../../shared/Icons/close-eye/close-eye.com
 import { LoaderComponent } from '../../../shared/Icons/loader/loader.component';
 import { AuthService } from '../../../shared/services/auth.service';
 
-import { User } from '../../../shared/interfaces';
 import { catchError, of } from 'rxjs';
+import { UserModel } from '../../../shared/types/user';
+import { UserRequest } from '../../../shared/types/user.request';
 
 @Component({
   selector: 'app-login-page',
@@ -68,7 +69,7 @@ export class LoginPageComponent implements OnInit {
     this.disabled = true;
     this.isLoading = true;
 
-    const user: User = {
+    const user: UserRequest = {
       email: this.form.value.email,
       password: this.form.value.password,
     };
@@ -77,7 +78,11 @@ export class LoginPageComponent implements OnInit {
       .login(user)
       .pipe(
         catchError((error) => {
-          this.errorMessage = error.statusText;
+          if (error.statusText === 'Unknown Error') {
+            this.errorMessage = `Для дальнейшего пользования приложением, перейдите https://github.com/SurPrizoV/angular-music-app?tab=readme-ov-file в раздел Ошибки`;
+          } else {
+            this.errorMessage = error.statusText;
+          }
           this.disabled = false;
           this.isLoading = false;
           return of(null);
