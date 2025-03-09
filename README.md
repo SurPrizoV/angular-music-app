@@ -44,7 +44,7 @@
 Frontend: Angular 19  
 Backend: ([REST API](https://github.com/skypro-web-developer/webdev-react-hw-template/blob/main/API.md))  
 Тесты: Полноценное тестирование для надежности  
-Деплой: [Деплой на vercel](https://angular-my-music.vercel.app/)
+Деплой: [Деплой на vercel](https://angular-music-app-bice.vercel.app/)
 
 ## 🛠 Как начать?
 
