@@ -116,7 +116,12 @@ export class TrackModel implements Track {
     return this._track;
   }
 
+  set isLiked(value: boolean | undefined) {
+    this._isLiked = value;
+  }
+
   get isLiked() {
     return this._isLiked;
   }
+
 }

@@ -102,7 +102,7 @@ export class TracksAPIService {
     return this.http
       .post(`${trackLink.baseURL}/${trackLink.URLcatalog}/${id}/favorite/`, {})
       .pipe(
-        tap(() => this.searchFilterService.updateTrack(id, { isLiked: true }))
+        tap(() => this.searchFilterService.updateLikedTrack(id, true ))
       );
   }
 
@@ -117,7 +117,7 @@ export class TracksAPIService {
     return this.http
       .delete(`${trackLink.baseURL}/${trackLink.URLcatalog}/${id}/favorite/`)
       .pipe(
-        tap(() => this.searchFilterService.updateTrack(id, { isLiked: false }))
+        tap(() => this.searchFilterService.updateLikedTrack(id,  false ))
       );
   }
 

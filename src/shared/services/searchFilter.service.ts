@@ -57,10 +57,13 @@ export class SearchFilterService {
    * @param {number} id - Идентификатор трека.
    * @param {Partial<Track>} changes - Объект с измененными полями трека.
    */
-  updateTrack(id: number, changes: Partial<Track>) {
-    const updatedTracks = this.tracksSubj.value.map((track) =>
-      track.id === id ? { ...track, ...changes } : track
-    );
+  updateLikedTrack(id: number, isLiked: boolean) {
+    const updatedTracks = this.tracksSubj.value.map((track) => {
+      if  (track.id === id) {
+        track.isLiked = isLiked
+      }
+      return track;
+    });
     this.tracksSubj.next(updatedTracks);
   }
 
@@ -126,6 +129,7 @@ export class SearchFilterService {
           sortOrder,
           shuffle,
         ]) => {
+          console.log('filterTracks method: ', tracks);
           let filteredTracks = [...tracks];
 
           if (searchTerm.trim()) {
@@ -170,6 +174,7 @@ export class SearchFilterService {
 
           this.playerService.setTracks(filteredTracks);
 
+          console.log(':::: before return ', filteredTracks);
           return filteredTracks;
         }
       )

@@ -43,13 +43,14 @@ export class PlaylistHundredPageComponent implements OnInit {
     this.isLoading = true;
     this.tracksAPIService.getTrackCollectionById(2).subscribe({
       next: (tracks: Track[]) => {
-        tracks = tracks.map((track) => ({
-          ...track,
-          isLiked: track.stared.some(
+        for (const track of tracks) {
+          const isLiked = track.stared.some(
             (user) => user.email === localStorage.getItem('mail')
-          ),
-        }));
+          );
 
+          track.isLiked = isLiked;
+
+        }
         this.searchFilterService.setTracks(tracks);
 
         this.searchFilterService.filterTracks().subscribe((filteredTracks) => {

@@ -66,7 +66,7 @@ describe('SearchFilterService', () => {
 
   it('should update track', () => {
     service.setTracks(mockTracks);
-    service.updateTrack(1, { name: 'Updated Track 1' });
+    service.updateLikedTrack(1, { name: 'Updated Track 1' });
 
     const updatedTrack = service['tracksSubj'].value.find(
       (track) => track.id === 1
